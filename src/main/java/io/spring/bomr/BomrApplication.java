@@ -16,8 +16,11 @@
 
 package io.spring.bomr;
 
+import java.util.Arrays;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * Main entry point for Bomr.
@@ -28,7 +31,36 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BomrApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BomrApplication.class, args);
+		ConfigurableApplicationContext context = SpringApplication
+				.run(BomrApplication.class, args);
+		Commands commands = context.getBean(Commands.class);
+		if (args.length == 0) {
+			displayUsage();
+			System.err.println();
+			displayCommandList(commands);
+			System.exit(-1);
+		}
+		Command command = commands.get(args[0]);
+		if (command == null) {
+			System.err.println("bomr: '" + args[0] + "' is not a bomr command");
+			System.err.println();
+			displayCommandList(commands);
+			System.exit(-1);
+		}
+		else {
+			command.invoke(Arrays.copyOfRange(args, 1, args.length));
+		}
+	}
+
+	private static void displayUsage() {
+		System.err.println("Usage: bomr <command> [<args>]");
+	}
+
+	private static void displayCommandList(Commands commands) {
+		System.err.println("Commands:");
+		System.err.println();
+		System.err.println(commands.describe());
+		System.err.println();
 	}
 
 }
