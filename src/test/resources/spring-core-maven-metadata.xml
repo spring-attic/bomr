@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-core</artifactId>
+  <versioning>
+    <latest>5.0.0.RELEASE</latest>
+    <release>5.0.0.RELEASE</release>
+    <versions>
+      <version>4.3.0.RELEASE</version>
+      <version>4.3.1.RELEASE</version>
+      <version>4.3.2.RELEASE</version>
+      <version>4.3.3.RELEASE</version>
+      <version>4.3.4.RELEASE</version>
+      <version>4.3.5.RELEASE</version>
+      <version>4.3.6.RELEASE</version>
+      <version>4.3.7.RELEASE</version>
+      <version>4.3.8.RELEASE</version>
+      <version>4.3.9.RELEASE</version>
+      <version>4.3.10.RELEASE</version>
+      <version>4.3.11.RELEASE</version>
+      <version>5.0.0.RELEASE</version>
+    </versions>
+    <lastUpdated>20170928121756</lastUpdated>
+  </versioning>
+</metadata>

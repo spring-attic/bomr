@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.example</groupId>
+  <artifactId>core</artifactId>
+  <versioning>
+    <latest>1.0.0.RELEASE</latest>
+    <release>1.0.0.RELEASE</release>
+    <versions>
+      <version>1.0.0.RELEASE</version>
+    </versions>
+    <lastUpdated>20170928121756</lastUpdated>
+  </versioning>
+</metadata>
