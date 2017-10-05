@@ -1,0 +1,33 @@
+#!/bin/bash
+
+[[ -n "$DEBUG" ]] && set -x
+
+working_directory="$(pwd)"
+
+# Follow symlinks to find the real jar
+cd "$(dirname "$0")" || exit 1
+[[ -z "$jarfile" ]] && jarfile=$(pwd)/$(basename "$0")
+while [[ -L "$jarfile" ]]; do
+  jarfile=$(readlink "$jarfile")
+  cd "$(dirname "$jarfile")" || exit 1
+  jarfile=$(pwd)/$(basename "$jarfile")
+done
+
+cd "$working_directory"
+
+# Find Java
+if [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]]; then
+    javaexe="$JAVA_HOME/bin/java"
+elif type -p java > /dev/null 2>&1; then
+    javaexe=$(type -p java)
+elif [[ -x "/usr/bin/java" ]];  then
+    javaexe="/usr/bin/java"
+else
+    echo "Unable to find Java"
+    exit 1
+fi
+
+arguments=(-Dsun.misc.URLClassPath.disableJarChecking=true $JAVA_OPTS -jar "$jarfile" $RUN_ARGS "$@")
+
+"$javaexe" "${arguments[@]}"
+exit $?

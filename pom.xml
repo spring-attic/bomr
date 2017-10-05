@@ -48,6 +48,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<executable>true</executable>
+					<embeddedLaunchScript>launch.script</embeddedLaunchScript>
 				</configuration>
 			</plugin>
 			<plugin>
