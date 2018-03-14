@@ -15,12 +15,13 @@ Bomr requires Java 8 and is built with Maven:
 Bomr is a fully executable Spring Boot fat jar that can be executed directly
 
 ```
-$ target/bomr.jar
+$ ./target/bomr.jar
 Usage: bomr <command> [<args>]
 
 Commands:
 
   upgrade    Upgrades the versions of the dependencies managed by a bom
+  verify     Verifies the dependencies managed by a bom
 ```
 
 ## Configuration
@@ -31,6 +32,12 @@ It is used to configure the credentials required to authenticate with GitHub:
 ```
 bomr.github.username=<<username>>
 bomr.github.password=<<password>>
+```
+
+And the location of Maven's home directory:
+
+```
+bomr.maven.home=/usr/local/Cellar/maven/3.5.3/libexec
 ```
 
 ## Commands
@@ -63,3 +70,27 @@ number will leave the dependency unchanged. Once the upgrades have been
 selected, a GitHub issue will be opened and a change commited for each. Having
 checked that the upgraded dependencies work and haven't introduced any
 deprecation warnings, the changes can be pushed.
+
+### verify
+
+The `verify` command is used to verify the dependency management in a Maven bom. The
+dependency management is verified by attempting to resolve every dependency that is
+managed by the bom. The command takes one required argument and one option:
+
+```
+Usage: bomr verify <pom> [<options>]
+
+Option             Description
+------             -----------
+--ignore <String>  groupId:artifactId of a managed dependency to ignore
+```
+
+For example, the verify Spring Boot's bom:
+
+```
+$ ~/dev/spring-io/bomr/target/bomr.jar verify spring-boot-project/spring-boot-dependencies/pom.xml \
+    --ignore org.eclipse.jetty:jetty-distribution \
+    --ignore org.eclipse.jetty:jetty-home \
+    --ignore io.netty:netty-example \
+    --ignore org.eclipse.jetty.cdi:cdi-full-servlet
+```

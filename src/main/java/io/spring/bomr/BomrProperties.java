@@ -16,6 +16,8 @@
 
 package io.spring.bomr;
 
+import java.io.File;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -28,12 +30,22 @@ public class BomrProperties {
 
 	private final GithubProperties github = new GithubProperties();
 
+	private final MavenProperties maven = new MavenProperties();
+
 	/**
 	 * Returns the GitHub-specific properties.
 	 * @return GitHub properties
 	 */
 	public GithubProperties getGithub() {
 		return this.github;
+	}
+
+	/**
+	 * Returns the Maven-specific properties.
+	 * @return Maven properties;
+	 */
+	public MavenProperties getMaven() {
+		return this.maven;
 	}
 
 	/**
@@ -81,6 +93,34 @@ public class BomrProperties {
 		 */
 		public void setPassword(String password) {
 			this.password = password;
+		}
+
+	}
+
+	/**
+	 * Properties for configuring Maven.
+	 */
+	public static class MavenProperties {
+
+		/**
+		 * Maven's home directory.
+		 */
+		private File home;
+
+		/**
+		 * Returns the location of Maven's home directory.
+		 * @return the home directory
+		 */
+		public File getHome() {
+			return this.home;
+		}
+
+		/**
+		 * Sets the location of Maven's home directory.
+		 * @param home the home directory
+		 */
+		public void setHome(File home) {
+			this.home = home;
 		}
 
 	}
