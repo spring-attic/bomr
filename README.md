@@ -85,7 +85,7 @@ Option             Description
 --ignore <String>  groupId:artifactId of a managed dependency to ignore
 ```
 
-For example, the verify Spring Boot's bom:
+For example, to verify Spring Boot's bom:
 
 ```
 $ ~/dev/spring-io/bomr/target/bomr.jar verify spring-boot-project/spring-boot-dependencies/pom.xml \
