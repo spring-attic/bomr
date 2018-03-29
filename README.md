@@ -45,9 +45,9 @@ bomr.maven.home=/usr/local/Cellar/maven/3.5.3/libexec
 
 ### artifacts
 
-The `artifacts` command lists the artifacts in a group with a particular. It is intended
-to be used when adding new dependency management to a bom. The command takes two required
-arguments and one option:
+The `artifacts` command lists the artifacts in a group with a particular version. It is
+intended to be used when adding new dependency management to a bom. The command takes two
+required arguments and one option:
 
 ```
 Usage: bomr artifacts <group> <version> [<options>]
