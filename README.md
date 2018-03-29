@@ -20,8 +20,9 @@ Usage: bomr <command> [<args>]
 
 Commands:
 
-  upgrade    Upgrades the versions of the dependencies managed by a bom
-  verify     Verifies the dependencies managed by a bom
+  artifacts    Lists the artifacts in a group with a matching version
+  upgrade      Upgrades the versions of the dependencies managed by a bom
+  verify       Verifies the dependencies managed by a bom
 ```
 
 ## Configuration
@@ -41,6 +42,42 @@ bomr.maven.home=/usr/local/Cellar/maven/3.5.3/libexec
 ```
 
 ## Commands
+
+### artifacts
+
+The `artifacts` command lists the artifacts in a group with a particular. It is intended
+to be used when adding new dependency management to a bom. The command takes two required
+arguments and one option:
+
+```
+Usage: bomr artifacts <group> <version> [<options>]
+
+Option                       Description
+------                       -----------
+--version-property <String>  Version property to use in generated dependency management
+```
+
+For example, to list the artifacts in the `org.quartz-scheduler` group with a version of
+`2.3.0` and use the `quartz.version` property in the resulting dependency management:
+
+```
+$ bomr.jar artifacts org.quartz-scheduler 2.3.0 --version-property quartz.version
+```
+
+This command will produce the following output:
+
+```xml
+<dependency>
+	<groupId>org.quartz-scheduler</groupId>
+	<artifactId>quartz</artifactId>
+	<version>${quartz.version}</version>
+</dependency>
+<dependency>
+	<groupId>org.quartz-scheduler</groupId>
+	<artifactId>quartz-jobs</artifactId>
+	<version>${quartz.version}</version>
+</dependency>
+```
 
 ### upgrade
 
