@@ -35,7 +35,7 @@ import org.springframework.web.client.RestOperations;
  */
 class ArtifactsFinder {
 
-	private final Pattern linkPattern = Pattern.compile("<a.*>(.*/)</a>");
+	private final Pattern linkPattern = Pattern.compile("<a href=\"(.*?/)\".*>.*/</a>");
 
 	private final RestOperations rest;
 
