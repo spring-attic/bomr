@@ -16,6 +16,7 @@
 
 package io.spring.bomr.artifacts;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -43,13 +44,12 @@ class ArtifactsFinder {
 		this.rest = rest;
 	}
 
-	Set<String> find(String group, String version) {
-		String groupUrl = "https://repo1.maven.org/maven2/" + group.replace('.', '/')
-				+ "/";
-		List<String> artifactLinks = extractLinks(groupUrl);
+	Set<String> find(URI repository, String group, String version) {
+		URI groupUri = repository.resolve(group.replace('.', '/') + "/");
+		List<String> artifactLinks = extractLinks(groupUri);
 		Set<String> artifacts = new TreeSet<>();
 		for (String artifactLink : artifactLinks) {
-			List<String> versionLinks = extractLinks(groupUrl + artifactLink);
+			List<String> versionLinks = extractLinks(groupUri.resolve(artifactLink));
 			if (versionLinks.contains(version + "/")) {
 				String artifact = artifactLink.substring(0, artifactLink.length() - 1);
 				if (jarArtifactExists(group, artifact, version)) {
@@ -60,9 +60,9 @@ class ArtifactsFinder {
 		return artifacts;
 	}
 
-	private List<String> extractLinks(String url) {
+	private List<String> extractLinks(URI uri) {
 		try {
-			ResponseEntity<String> response = this.rest.getForEntity(url, String.class);
+			ResponseEntity<String> response = this.rest.getForEntity(uri, String.class);
 			String body = response.getBody();
 			List<String> links = new ArrayList<String>();
 			Matcher matcher = this.linkPattern.matcher(body);
@@ -75,7 +75,7 @@ class ArtifactsFinder {
 			return links;
 		}
 		catch (RestClientException ex) {
-			System.err.println(url + " " + ex.getMessage());
+			System.err.println(uri + " " + ex.getMessage());
 			System.exit(-1);
 			return null;
 		}

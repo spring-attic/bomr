@@ -17,6 +17,7 @@
 package io.spring.bomr.artifacts;
 
 import java.io.File;
+import java.net.URI;
 import java.util.Set;
 
 import org.junit.Test;
@@ -50,8 +51,9 @@ public class ArtifactsFinderTests {
 	public void findReturnsNamesOfArtifactsWithMatchingVersionAndJarArtifact() {
 		configureExpectations(
 				new File("src/test/resources/artifacts/org/quartz-scheduler/"));
-		Set<String> artifacts = new ArtifactsFinder(this.rest)
-				.find("org.quartz-scheduler", "2.3.0");
+		Set<String> artifacts = new ArtifactsFinder(this.rest).find(
+				URI.create("https://repo1.maven.org/maven2/"), "org.quartz-scheduler",
+				"2.3.0");
 		assertThat(artifacts).containsExactly("quartz", "quartz-jobs");
 	}
 

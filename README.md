@@ -47,13 +47,14 @@ bomr.maven.home=/usr/local/Cellar/maven/3.5.3/libexec
 
 The `artifacts` command lists the artifacts in a group with a particular version. It is
 intended to be used when adding new dependency management to a bom. The command takes two
-required arguments and one option:
+required arguments and two options:
 
 ```
 Usage: bomr artifacts <group> <version> [<options>]
 
 Option                       Description
 ------                       -----------
+--repository <URI>           Repository to query
 --version-property <String>  Version property to use in generated dependency management
 ```
 
@@ -78,6 +79,9 @@ This command will produce the following output:
 	<version>${quartz.version}</version>
 </dependency>
 ```
+
+`--repository` can be used to list artifacts that are not yet available in Maven Central,
+for example for a milestone or snapshot.
 
 ### upgrade
 

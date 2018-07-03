@@ -17,6 +17,7 @@
 package io.spring.bomr.artifacts;
 
 import java.io.IOException;
+import java.net.URI;
 
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.BuiltinHelpFormatter;
@@ -36,11 +37,14 @@ final class ArtifactsCommandArguments {
 
 	private final String versionProperty;
 
+	private final URI repository;
+
 	private ArtifactsCommandArguments(String group, String version,
-			String versionProperty) {
+			String versionProperty, URI repository) {
 		this.group = group;
 		this.version = version;
 		this.versionProperty = versionProperty;
+		this.repository = repository;
 	}
 
 	static ArtifactsCommandArguments parse(String[] args) {
@@ -50,6 +54,9 @@ final class ArtifactsCommandArguments {
 				.accepts("version-property",
 						"Version property to use in generated dependency management")
 				.withRequiredArg().ofType(String.class);
+		ArgumentAcceptingOptionSpec<URI> repositoryPropertySpec = optionParser
+				.accepts("repository", "Repository to query").withRequiredArg()
+				.ofType(URI.class);
 		try {
 			OptionSet parsed = optionParser.parse(args);
 			if (parsed.nonOptionArguments().size() != 2) {
@@ -58,7 +65,8 @@ final class ArtifactsCommandArguments {
 			return new ArtifactsCommandArguments(
 					(String) parsed.nonOptionArguments().get(0),
 					(String) parsed.nonOptionArguments().get(1),
-					parsed.valueOf(versionPropertySpec));
+					parsed.valueOf(versionPropertySpec),
+					parsed.valueOf(repositoryPropertySpec));
 		}
 		catch (Exception ex) {
 			showUsageAndExit(optionParser);
@@ -89,6 +97,10 @@ final class ArtifactsCommandArguments {
 
 	String getVersionProperty() {
 		return this.versionProperty;
+	}
+
+	URI getRepository() {
+		return this.repository;
 	}
 
 }

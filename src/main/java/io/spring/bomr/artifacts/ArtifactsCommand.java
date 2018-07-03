@@ -48,8 +48,8 @@ class ArtifactsCommand implements Command {
 	@Override
 	public void invoke(String[] args) {
 		ArtifactsCommandArguments arguments = ArtifactsCommandArguments.parse(args);
-		Set<String> artifacts = this.artifactsFinder.find(arguments.getGroup(),
-				arguments.getVersion());
+		Set<String> artifacts = this.artifactsFinder.find(arguments.getRepository(),
+				arguments.getGroup(), arguments.getVersion());
 		artifacts.forEach((artifact) -> {
 			System.out.println("<dependency>");
 			System.out.println("\t<groupId>" + arguments.getGroup() + "</groupId>");
