@@ -28,6 +28,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import io.spring.bomr.upgrade.BomVersions.BomVersion;
@@ -66,34 +67,42 @@ final class Bom {
 
 	private Map<ProjectName, Project> extractManagedProjects(Document bom,
 			BomVersions versions) {
-		XPath xpath = XPathFactory.newInstance().newXPath();
 		Map<ProjectName, Project> projects = new LinkedHashMap<>();
 		try {
-			String projectGroupId = xpath.evaluate("/project/groupId/text()", bom);
-			NodeList managedDependencies = (NodeList) xpath.evaluate(
-					"/project/dependencyManagement/dependencies/dependency", bom,
-					XPathConstants.NODESET);
-			for (int i = 0; i < managedDependencies.getLength(); i++) {
-				Node managedDependency = managedDependencies.item(i);
-				String groupId = xpath.evaluate("groupId/text()", managedDependency);
-				if (!groupId.equals(projectGroupId)) {
-					BomVersion version = versions
-							.resolve(xpath.evaluate("version/text()", managedDependency));
-					if (version != null) {
-						Project project = projects.computeIfAbsent(
-								new ProjectName(version),
-								(projectName) -> new Project(projectName, version));
-						String artifactId = xpath.evaluate("artifactId/text()",
-								managedDependency);
-						project.getModules().add(new Module(groupId, artifactId));
-					}
-				}
-			}
+			collectProjects("/project/dependencyManagement/dependencies/dependency",
+					projects, bom, versions);
+			collectProjects("/project/build/pluginManagement/plugins/plugin", projects,
+					bom, versions);
 		}
 		catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 		return projects;
+	}
+
+	private void collectProjects(String managedExpression,
+			Map<ProjectName, Project> projects, Document bom, BomVersions versions)
+			throws XPathExpressionException {
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		String projectGroupId = xpath.evaluate("/project/groupId/text()", bom);
+		NodeList managedDependencies = (NodeList) xpath.evaluate(managedExpression, bom,
+				XPathConstants.NODESET);
+		for (int i = 0; i < managedDependencies.getLength(); i++) {
+			Node managedDependency = managedDependencies.item(i);
+			String groupId = xpath.evaluate("groupId/text()", managedDependency);
+			if (!groupId.equals(projectGroupId)) {
+				BomVersion version = versions
+						.resolve(xpath.evaluate("version/text()", managedDependency));
+				if (version != null) {
+					Project project = projects.computeIfAbsent(new ProjectName(version),
+							(projectName) -> new Project(projectName, version));
+					String artifactId = xpath.evaluate("artifactId/text()",
+							managedDependency);
+					project.getModules().add(new Module(groupId, artifactId));
+				}
+			}
+		}
+
 	}
 
 	Map<ProjectName, Project> getManagedProjects() {

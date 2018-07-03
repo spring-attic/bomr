@@ -54,11 +54,10 @@ final class UpgradeCommandArguments {
 		OptionParser optionParser = new OptionParser();
 		optionParser.formatHelpWith(new BuiltinHelpFormatter(120, 2));
 		ArgumentAcceptingOptionSpec<String> labelSpec = optionParser
-				.accepts("label", "Label to apply to dependency upgrade issues")
-				.withRequiredArg().ofType(String.class);
+				.accepts("label", "Label to apply to upgrade issues").withRequiredArg()
+				.ofType(String.class);
 		ArgumentAcceptingOptionSpec<String> milestoneSpec = optionParser
-				.accepts("milestone",
-						"Milestone to which dependency upgrade issues are assigned")
+				.accepts("milestone", "Milestone to which upgrade issues are assigned")
 				.withRequiredArg().ofType(String.class);
 		try {
 			OptionSet parsed = optionParser.parse(args);

@@ -24,7 +24,8 @@ import io.spring.bomr.github.GitHub;
 import org.springframework.stereotype.Component;
 
 /**
- * A {@link Command} for upgrading the versions of the dependencies managed by a bom.
+ * A {@link Command} for upgrading the versions of the plugins and dependencies managed by
+ * a bom.
  *
  * @author Andy Wilkinson
  */
@@ -44,7 +45,7 @@ final class UpgradeCommand implements Command {
 
 	@Override
 	public String getDescription() {
-		return "Upgrades the versions of the dependencies managed by a bom";
+		return "Upgrades the versions of the plugins and dependencies managed by a bom";
 	}
 
 	@Override
