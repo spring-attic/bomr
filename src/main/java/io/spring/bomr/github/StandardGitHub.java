@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2017-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.DefaultUriTemplateHandler;
+import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.springframework.web.util.UriTemplateHandler;
 
 /**
  * Standard implementation of {@link GitHub}.
@@ -63,8 +64,7 @@ final class StandardGitHub implements GitHub {
 			}
 
 		});
-		DefaultUriTemplateHandler uriTemplateHandler = new DefaultUriTemplateHandler();
-		uriTemplateHandler.setBaseUrl(
+		UriTemplateHandler uriTemplateHandler = new DefaultUriBuilderFactory(
 				"https://api.github.com/repos/" + organization + "/" + name + "/");
 		restTemplate.setUriTemplateHandler(uriTemplateHandler);
 		return new StandardGitHubRepository(restTemplate);
