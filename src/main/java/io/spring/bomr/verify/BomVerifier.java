@@ -21,6 +21,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -56,31 +57,34 @@ class BomVerifier {
 
 	void verify(File bom, Set<String> ignoredDependencies) {
 		VerifiableBom verifiableBom = new VerifiableBom(this.mavenInvoker, bom);
+		List<ManagedDependency> dependenciesToVerify = verifiableBom
+				.getManagedDependencies().stream()
+				.filter((dependency) -> !ignoredDependencies.contains(
+						dependency.getGroupId() + ":" + dependency.getArtifactId()))
+				.collect(Collectors.toList());
 		File dependenciesPom = createDependenciesPom(bom, verifiableBom,
-				ignoredDependencies);
-		System.out.print("Verifying " + verifiableBom.getManagedDependencies().size()
-				+ " dependencies...");
+				dependenciesToVerify);
+		System.out.print("Verifying " + dependenciesToVerify.size() + " dependencies...");
 		try {
 			this.mavenInvoker.invoke(dependenciesPom, new Properties(),
 					"dependency:list");
 			System.out.println(" Done.");
 		}
 		catch (MavenInvocationFailedException ex) {
+			System.err.println();
 			System.err.println("Dependency resolution failed:");
+			System.err.println();
 			ex.getOutputLines().forEach(System.err::println);
 		}
 	}
 
 	private File createDependenciesPom(File bomFile, VerifiableBom bom,
-			Set<String> ignoredDependencies) {
+			List<ManagedDependency> dependenciesToVerify) {
 		try {
 			Template template = this.compiler
 					.compile(this.templateLoader.getTemplate("bom-dependencies"));
 			Map<String, Object> context = new HashMap<>();
-			context.put("dependencies", bom.getManagedDependencies().stream()
-					.filter((dependency) -> !ignoredDependencies.contains(
-							dependency.getGroupId() + ":" + dependency.getArtifactId()))
-					.collect(Collectors.toList()));
+			context.put("dependencies", dependenciesToVerify);
 			context.put("repositories", bom.getRepositories());
 			context.put("parentGroupId", bom.getGroupId());
 			context.put("parentArtifactId", bom.getArtifactId());
