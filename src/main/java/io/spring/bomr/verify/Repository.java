@@ -31,6 +31,12 @@ final class Repository {
 
 	private final boolean snapshotsEnabled;
 
+	Repository(URI url) {
+		this.id = (url.getHost() + "-" + url.getPath()).replace("/", "-");
+		this.url = url;
+		this.snapshotsEnabled = false;
+	}
+
 	Repository(String id, URI url, boolean snapshotsEnabled) {
 		this.id = id;
 		this.url = url;

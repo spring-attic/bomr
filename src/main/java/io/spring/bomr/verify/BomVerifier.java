@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +57,7 @@ class BomVerifier {
 		this.templateLoader = templateLoader;
 	}
 
-	void verify(File bom, Set<String> ignoredDependencies) {
+	void verify(File bom, Set<String> ignoredDependencies, Set<URI> repositoryUris) {
 		VerifiableBom verifiableBom = new VerifiableBom(this.mavenInvoker, bom);
 		List<ManagedDependency> dependenciesToVerify = verifiableBom
 				.getManagedDependencies().stream()
@@ -63,7 +65,8 @@ class BomVerifier {
 						dependency.getGroupId() + ":" + dependency.getArtifactId()))
 				.collect(Collectors.toList());
 		File dependenciesPom = createDependenciesPom(bom, verifiableBom,
-				dependenciesToVerify);
+				dependenciesToVerify, repositoryUris.stream().map(Repository::new)
+						.collect(Collectors.toList()));
 		System.out.print("Verifying " + dependenciesToVerify.size() + " dependencies...");
 		try {
 			this.mavenInvoker.invoke(dependenciesPom, new Properties(),
@@ -79,13 +82,16 @@ class BomVerifier {
 	}
 
 	private File createDependenciesPom(File bomFile, VerifiableBom bom,
-			List<ManagedDependency> dependenciesToVerify) {
+			List<ManagedDependency> dependenciesToVerify,
+			List<Repository> additionalRepositories) {
 		try {
 			Template template = this.compiler
 					.compile(this.templateLoader.getTemplate("bom-dependencies"));
 			Map<String, Object> context = new HashMap<>();
 			context.put("dependencies", dependenciesToVerify);
-			context.put("repositories", bom.getRepositories());
+			List<Repository> repositories = new ArrayList<>(bom.getRepositories());
+			repositories.addAll(additionalRepositories);
+			context.put("repositories", repositories);
 			context.put("parentGroupId", bom.getGroupId());
 			context.put("parentArtifactId", bom.getArtifactId());
 			context.put("parentVersion", bom.getVersion());

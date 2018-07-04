@@ -17,6 +17,7 @@
 package io.spring.bomr.verify;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,9 +37,13 @@ final class VerifyCommandArguments {
 
 	private final Set<String> ignores;
 
-	private VerifyCommandArguments(String bom, Set<String> ignores) {
+	private final Set<URI> repositoryUris;
+
+	private VerifyCommandArguments(String bom, Set<String> ignores,
+			Set<URI> repositoryUris) {
 		this.bom = bom;
 		this.ignores = ignores;
+		this.repositoryUris = repositoryUris;
 	}
 
 	static VerifyCommandArguments parse(String[] args) {
@@ -47,13 +52,18 @@ final class VerifyCommandArguments {
 		ArgumentAcceptingOptionSpec<String> ignoreSpec = optionParser
 				.accepts("ignore", "groupId:artifactId of a managed dependency to ignore")
 				.withRequiredArg().ofType(String.class);
+		ArgumentAcceptingOptionSpec<URI> repositorySpec = optionParser
+				.accepts("repository",
+						"Additional repository to use for dependency resolution")
+				.withRequiredArg().ofType(URI.class);
 		try {
 			OptionSet parsed = optionParser.parse(args);
 			if (parsed.nonOptionArguments().size() != 1) {
 				showUsageAndExit(optionParser);
 			}
 			return new VerifyCommandArguments((String) parsed.nonOptionArguments().get(0),
-					new HashSet<>(parsed.valuesOf(ignoreSpec)));
+					new HashSet<>(parsed.valuesOf(ignoreSpec)),
+					new HashSet<>(parsed.valuesOf(repositorySpec)));
 		}
 		catch (Exception ex) {
 			showUsageAndExit(optionParser);
@@ -80,6 +90,10 @@ final class VerifyCommandArguments {
 
 	Set<String> getIgnores() {
 		return this.ignores;
+	}
+
+	Set<URI> getRepositoryUris() {
+		return this.repositoryUris;
 	}
 
 }

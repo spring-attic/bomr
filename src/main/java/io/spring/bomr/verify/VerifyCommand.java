@@ -55,7 +55,8 @@ class VerifyCommand implements Command {
 			System.err.println();
 			System.exit(-1);
 		}
-		this.verifier.verify(pomFile, arguments.getIgnores());
+		this.verifier.verify(pomFile, arguments.getIgnores(),
+				arguments.getRepositoryUris());
 	}
 
 }

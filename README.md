@@ -114,22 +114,25 @@ work and haven't introduced any deprecation warnings, the changes can be pushed.
 
 The `verify` command is used to verify the dependency management in a Maven bom. The
 dependency management is verified by attempting to resolve every dependency that is
-managed by the bom. The command takes one required argument and one option:
+managed by the bom. The command takes one required argument and two options:
 
 ```
 Usage: bomr verify <pom> [<options>]
 
-Option             Description
-------             -----------
---ignore <String>  groupId:artifactId of a managed dependency to ignore
+Option              Description
+------              -----------
+--ignore <String>   groupId:artifactId of a managed dependency to ignore
+--repository <URI>  Additional repository to use for dependency resolution
 ```
 
 For example, to verify Spring Boot's bom:
 
 ```
 $ ~/dev/spring-io/bomr/target/bomr.jar verify spring-boot-project/spring-boot-dependencies/pom.xml \
-    --ignore org.eclipse.jetty:jetty-distribution \
-    --ignore org.eclipse.jetty:jetty-home \
     --ignore io.netty:netty-example \
-    --ignore org.eclipse.jetty.cdi:cdi-full-servlet
+    --repository=https://repo.spring.io/libs-release
 ```
+
+In the example above, the `libs-release` repository is required as `spring-data-gemfire`,
+which is managed by the bom, depends on GemFire artifacts that are not available in Maven
+Central.
