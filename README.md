@@ -83,6 +83,49 @@ This command will produce the following output:
 `--repository` can be used to list artifacts that are not yet available in Maven Central,
 for example for a milestone or snapshot.
 
+### artifacts-delta
+
+The `artifacts-delta` command lists the change in the artifacts in a group across two
+versions. It is intended to be used when upgrading to a new version of a dependency. The
+command takes three required arguments and two options:
+
+```
+Usage: bomr artifacts <group> <old-version> <new-version> [<options>]
+
+Option                       Description
+------                       -----------
+--repository <URI>           Repository to query
+--version-property <String>  Version property to use in generated dependency management
+```
+
+For example, to list the change in artifacts in the `org.springframework.restdocs` group
+across versions `1.2.0` and `2.0.0.RELEASE` and use the `spring-restdocs.version` property
+in any new dependency management:
+
+```
+$ bomr.jar artifacts org.springframework.restdocs 1.2.0.RELEASE 2.0.0.RELEASE \
+    --version-property spring-restdocs.version
+```
+
+This command will produce the following output:
+
+```
+Removed:
+
+None
+
+Added:
+
+<dependency>
+  <groupId>org.springframework.restdocs</groupId>
+  <artifactId>spring-restdocs-webtestclient</artifactId>
+  <version>${spring-restdocs.version}</version>
+</dependency>
+```
+
+`--repository` can be used to list the delta when artifacts are not yet available in Maven
+Central, for example for a milestone or snapshot.
+
 ### upgrade
 
 The `upgrade` command is used to upgrade the dependency and plugin management in a Maven

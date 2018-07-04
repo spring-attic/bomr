@@ -33,4 +33,9 @@ class ArtifactsConfiguration {
 		return new ArtifactsCommand(new ArtifactsFinder(new RestTemplate()));
 	}
 
+	@Bean
+	public ArtifactsDeltaCommand artifactsDeltaCommand() {
+		return new ArtifactsDeltaCommand(new ArtifactsFinder(new RestTemplate()));
+	}
+
 }
