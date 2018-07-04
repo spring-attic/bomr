@@ -101,7 +101,10 @@ Option                Description
 For example, to upgrade Spring Boot's bom:
 
 ```
-$ bomr.jar upgrade spring-boot-project/spring-boot-dependencies/pom.xml spring-projects spring-boot --label="priority: normal" --label="type: dependency-upgrade" --milestone=2.0.4.RELEASE
+$ bomr.jar upgrade spring-boot-project/spring-boot-dependencies/pom.xml spring-projects spring-boot \
+    --label="priority: normal" \
+    --label="type: dependency-upgrade" \
+    --milestone=2.0.4.RELEASE
 ```
 
 For each manged plugin or dependency in the bom with one or more newer versions, you will
@@ -128,8 +131,8 @@ Option              Description
 For example, to verify Spring Boot's bom:
 
 ```
-$ ~/dev/spring-io/bomr/target/bomr.jar verify spring-boot-project/spring-boot-dependencies/pom.xml \
-    --ignore io.netty:netty-example \
+$ bomr.jar verify spring-boot-project/spring-boot-dependencies/pom.xml \
+    --ignore=io.netty:netty-example \
     --repository=https://repo.spring.io/libs-release
 ```
 
