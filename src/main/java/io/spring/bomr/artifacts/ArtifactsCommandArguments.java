@@ -44,7 +44,8 @@ final class ArtifactsCommandArguments {
 		this.group = group;
 		this.version = version;
 		this.versionProperty = versionProperty;
-		this.repository = repository;
+		this.repository = repository == null
+				? URI.create("https://repo1.maven.org/maven2/") : repository;
 	}
 
 	static ArtifactsCommandArguments parse(String[] args) {
