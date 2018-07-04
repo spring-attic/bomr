@@ -81,6 +81,7 @@ class BomVerifier {
 					.filter((dependency) -> !ignoredDependencies.contains(
 							dependency.getGroupId() + ":" + dependency.getArtifactId()))
 					.collect(Collectors.toList()));
+			context.put("repositories", bom.getRepositories());
 			context.put("parentGroupId", bom.getGroupId());
 			context.put("parentArtifactId", bom.getArtifactId());
 			context.put("parentVersion", bom.getVersion());

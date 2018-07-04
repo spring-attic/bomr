@@ -26,4 +26,15 @@
 {{/dependencies}}
 	</dependencies>
 
+	<repositories>
+{{#repositories}}
+		<repository>
+			<id>{{id}}</id>
+			<url>{{url}}</url>
+			<snapshots>
+				<enabled>{{snapshotsEnabled}}</enabled>
+			</snapshots>
+		</repository>
+{{/repositories}}
+	</repositories>
 </project>

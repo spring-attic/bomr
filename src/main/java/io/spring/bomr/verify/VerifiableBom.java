@@ -18,8 +18,10 @@ package io.spring.bomr.verify;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import java.util.Properties;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -45,6 +47,8 @@ class VerifiableBom {
 
 	private final List<ManagedDependency> managedDependencies;
 
+	private final List<Repository> repositories;
+
 	private final String groupId;
 
 	private final String artifactId;
@@ -56,16 +60,14 @@ class VerifiableBom {
 			File effectiveBomFile = createEffectiveBomFile(mavenInvoker, bomFile);
 			Document effectiveBom = parseBom(effectiveBomFile);
 			XPath xpath = XPathFactory.newInstance().newXPath();
-			NodeList managedDependencies = (NodeList) xpath.evaluate(
+			this.managedDependencies = asList(xpath,
 					"/project/dependencyManagement/dependencies/dependency", effectiveBom,
-					XPathConstants.NODESET);
-			this.managedDependencies = IntStream.range(0, managedDependencies.getLength())
-					.mapToObj(managedDependencies::item)
-					.map((node) -> createManagedDependency(xpath, node))
-					.collect(Collectors.toList());
+					this::createManagedDependency);
 			this.groupId = xpath.evaluate("/project/groupId/text()", effectiveBom);
 			this.artifactId = xpath.evaluate("/project/artifactId/text()", effectiveBom);
 			this.version = xpath.evaluate("/project/version/text()", effectiveBom);
+			this.repositories = asList(xpath, "/project/repositories/repository",
+					effectiveBom, this::createRepository);
 		}
 		catch (Exception ex) {
 			throw new RuntimeException(ex);
@@ -74,6 +76,10 @@ class VerifiableBom {
 
 	public List<ManagedDependency> getManagedDependencies() {
 		return this.managedDependencies;
+	}
+
+	public List<Repository> getRepositories() {
+		return this.repositories;
 	}
 
 	String getGroupId() {
@@ -88,6 +94,14 @@ class VerifiableBom {
 		return this.version;
 	}
 
+	private <T> List<T> asList(XPath xpath, String expression, Document effectiveBom,
+			BiFunction<XPath, Node, T> mapper) throws Exception {
+		NodeList nodeList = (NodeList) xpath.evaluate(expression, effectiveBom,
+				XPathConstants.NODESET);
+		return IntStream.range(0, nodeList.getLength()).mapToObj(nodeList::item)
+				.map((node) -> mapper.apply(xpath, node)).collect(Collectors.toList());
+	}
+
 	private ManagedDependency createManagedDependency(XPath xpath, Node node) {
 		try {
 			String groupId = xpath.evaluate("groupId/text()", node);
@@ -95,6 +109,19 @@ class VerifiableBom {
 			String classifier = xpath.evaluate("classifier/text()", node);
 			String type = xpath.evaluate("type/text()", node);
 			return new ManagedDependency(groupId, artifactId, classifier, type);
+		}
+		catch (XPathExpressionException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	private Repository createRepository(XPath xpath, Node node) {
+		try {
+			String id = xpath.evaluate("id/text()", node);
+			String url = xpath.evaluate("url/text()", node);
+			boolean snapshotsEnabled = Boolean
+					.valueOf(xpath.evaluate("snapshots/enabled/text()", node));
+			return new Repository(id, URI.create(url), snapshotsEnabled);
 		}
 		catch (XPathExpressionException ex) {
 			throw new RuntimeException(ex);

@@ -50,6 +50,7 @@ class MavenInvoker {
 		invocation.setPomFile(pom);
 		invocation.setGoals(Arrays.asList(goals));
 		invocation.setProperties(properties);
+		invocation.setUpdateSnapshots(true);
 		CapturingInvocationOutputHandler outputHandler = new CapturingInvocationOutputHandler();
 		invocation.setOutputHandler(outputHandler);
 		DefaultInvoker invoker = new DefaultInvoker();
