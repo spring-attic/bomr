@@ -145,15 +145,14 @@ For example, to upgrade Spring Boot's bom:
 
 ```
 $ bomr.jar upgrade spring-boot-project/spring-boot-dependencies/pom.xml spring-projects spring-boot \
-    --label="priority: normal" \
     --label="type: dependency-upgrade" \
-    --milestone=2.0.4.RELEASE
+    --milestone=2.0.5.RELEASE
 ```
 
 For each manged plugin or dependency in the bom with one or more newer versions, you will
 be prompted to select the version to use. Pressing enter without entering a number will
 leave the managed version unchanged. Once the upgrades have been selected, a GitHub issue
-will be opened and a change commited for each. Having checked that the upgraded versions
+will be opened and a change committed for each. Having checked that the upgraded versions
 work and haven't introduced any deprecation warnings, the changes can be pushed.
 
 ### verify
