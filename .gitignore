@@ -1,5 +1,11 @@
+# Eclipse
 .classpath
 .factorypath
 .project
 .settings
+
+# IntelliJ IDEA
+.idea
+*.iml
+
 target
