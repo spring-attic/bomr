@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2017-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,21 +25,18 @@ public interface Command extends Comparable<Command> {
 
 	/**
 	 * Returns the name of the command that is used to invoke it from the command line.
-	 *
 	 * @return the name of the command
 	 */
 	String getName();
 
 	/**
 	 * Returns the description of the command, shown in CLI usage messages.
-	 *
 	 * @return the description of the command
 	 */
 	String getDescription();
 
 	/**
 	 * Invokes the command using the given {@code args}.
-	 *
 	 * @param args the args
 	 */
 	void invoke(String[] args);

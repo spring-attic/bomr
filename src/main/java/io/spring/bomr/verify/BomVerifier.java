@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 the original author or authors.
+ * Copyright 2017-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import com.samskivert.mustache.Mustache.TemplateLoader;
 import com.samskivert.mustache.Template;
 import com.samskivert.mustache.Template.Fragment;
 import io.spring.bomr.verify.MavenInvoker.MavenInvocationFailedException;
+
 import org.springframework.util.StringUtils;
 
 /**

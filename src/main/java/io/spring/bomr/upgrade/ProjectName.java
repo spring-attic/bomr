@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2017-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,11 +47,6 @@ final class ProjectName {
 	}
 
 	@Override
-	public int hashCode() {
-		return this.name.hashCode();
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -64,6 +59,11 @@ final class ProjectName {
 		}
 		ProjectName other = (ProjectName) obj;
 		return this.name.equals(other.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.name.hashCode();
 	}
 
 	@Override

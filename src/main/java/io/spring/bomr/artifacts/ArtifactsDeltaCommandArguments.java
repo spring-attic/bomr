@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 the original author or authors.
+ * Copyright 2017-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,8 +47,8 @@ final class ArtifactsDeltaCommandArguments {
 		this.oldVersion = oldVersion;
 		this.newVersion = newVersion;
 		this.versionProperty = versionProperty;
-		this.repository = repository == null
-				? URI.create("https://repo1.maven.org/maven2/") : repository;
+		this.repository = (repository != null) ? repository
+				: URI.create("https://repo1.maven.org/maven2/");
 	}
 
 	static ArtifactsDeltaCommandArguments parse(String[] args) {
