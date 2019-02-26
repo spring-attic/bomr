@@ -16,8 +16,7 @@
 
 package io.spring.bomr.github;
 
-import io.spring.bomr.BomrProperties;
-
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,12 +26,13 @@ import org.springframework.context.annotation.Configuration;
  * @author Andy Wilkinson
  */
 @Configuration
+@EnableConfigurationProperties(GitHubProperties.class)
 class GitHubConfiguration {
 
 	@Bean
-	public GitHub gitHub(BomrProperties bomrProperties) {
-		return new StandardGitHub(bomrProperties.getGithub().getUsername(),
-				bomrProperties.getGithub().getPassword());
+	public GitHub gitHub(GitHubProperties gitHubProperties) {
+		return new StandardGitHub(gitHubProperties.getUsername(),
+				gitHubProperties.getPassword());
 	}
 
 }

@@ -16,27 +16,37 @@
 
 package io.spring.bomr.verify;
 
-import com.samskivert.mustache.Mustache.Compiler;
-import com.samskivert.mustache.Mustache.TemplateLoader;
+import java.io.File;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Configuration for bom verification.
+ * Properties for configuring Maven.
  *
  * @author Andy Wilkinson
  */
-@Configuration
-@EnableConfigurationProperties(MavenProperties.class)
-class VerificationConfiguration {
+@ConfigurationProperties("bomr.maven")
+public class MavenProperties {
 
-	@Bean
-	public VerifyCommand verifyCommand(MavenProperties maven, Compiler compiler,
-			TemplateLoader templateLoader) {
-		return new VerifyCommand(new BomVerifier(new MavenInvoker(maven.getHome()),
-				compiler, templateLoader));
+	/**
+	 * Maven's home directory.
+	 */
+	private File home;
+
+	/**
+	 * Returns the location of Maven's home directory.
+	 * @return the home directory
+	 */
+	public File getHome() {
+		return this.home;
+	}
+
+	/**
+	 * Sets the location of Maven's home directory.
+	 * @param home the home directory
+	 */
+	public void setHome(File home) {
+		this.home = home;
 	}
 
 }
