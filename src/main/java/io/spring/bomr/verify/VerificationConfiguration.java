@@ -18,6 +18,7 @@ package io.spring.bomr.verify;
 
 import com.samskivert.mustache.Mustache.Compiler;
 import com.samskivert.mustache.Mustache.TemplateLoader;
+import io.spring.bomr.BomrProperties;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -29,14 +30,16 @@ import org.springframework.context.annotation.Configuration;
  * @author Andy Wilkinson
  */
 @Configuration
-@EnableConfigurationProperties(MavenProperties.class)
+@EnableConfigurationProperties({ MavenProperties.class, VerifyProperties.class })
 class VerificationConfiguration {
 
 	@Bean
-	public VerifyCommand verifyCommand(MavenProperties maven, Compiler compiler,
-			TemplateLoader templateLoader) {
-		return new VerifyCommand(new BomVerifier(new MavenInvoker(maven.getHome()),
-				compiler, templateLoader));
+	public VerifyCommand verifyCommand(BomrProperties bomr, MavenProperties maven,
+			VerifyProperties verify, Compiler compiler, TemplateLoader templateLoader) {
+		return new VerifyCommand(
+				new BomVerifier(new MavenInvoker(maven.getHome()), compiler,
+						templateLoader),
+				bomr.getBom(), verify.getIgnoredDependencies(), verify.getRepositories());
 	}
 
 }

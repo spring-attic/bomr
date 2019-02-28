@@ -134,24 +134,31 @@ Central, for example for a milestone or snapshot.
 ### upgrade
 
 The `upgrade` command is used to upgrade the dependency and plugin management in a Maven
-bom. It should be run from within the cloned Git repository that contains the bom you wish
-to upgrade. The command takes three required arguments and two options:
+bom. It should be run from the root of the cloned Git repository that contains the bom
+you wish to upgrade. `upgrade` uses the following configuration properties:
+
+| Property                           | Description                                     |
+| ---------------------------------- | ------------------------------------------------|
+| `bomr.bom`                         | Bom to upgrade                                  |
+| `bomr.upgrade.github.organization` | Organization of repository where upgrade issues should be opened |
+| `bomr.upgrade.github.repository`   | Repository where upgrade issues should be opened |
+| `bomr.upgrade.github.labels`       | Labels to apply to opened issues                |
+| `bomr.upgrade.policy`              | Policy used to identify eligible versions       |
+
+The command takes a single option:
 
 ```
 Usage: bomr upgrade <pom> <org> <repository> [<options>]
 
 Option                Description
 ------                -----------
---label <String>      Label to apply to upgrade issues
 --milestone <String>  Milestone to which upgrade issues are assigned
 ```
 
-For example, to upgrade Spring Boot's bom:
+For example, to upgrade a bom and assign isses to the `2.0.5` milestone:
 
 ```
-$ bomr.jar upgrade spring-boot-project/spring-boot-dependencies/pom.xml spring-projects spring-boot \
-    --label="type: dependency-upgrade" \
-    --milestone=2.0.5.RELEASE
+$ bomr.jar upgrade --milestone=2.0.5
 ```
 
 For each managed plugin or dependency in the bom with one or more newer versions that
@@ -172,27 +179,22 @@ work and haven't introduced any deprecation warnings, the changes can be pushed.
 
 ### verify
 
-The `verify` command is used to verify the dependency management in a Maven bom. The
-dependency management is verified by attempting to resolve every dependency that is
-managed by the bom. The command takes one required argument and two options:
+The `verify` command is used to verify the dependency management in a Maven bom. It
+should be run from the root of the cloned Git repository that contains the bom you wish
+to upgrade. The dependency management is verified by attempting to resolve every
+dependency that is managed by the bom. `verify` uses the following configuration
+properties:
+
+| Property                           | Description                                     |
+| ---------------------------------- | ------------------------------------------------|
+| `bomr.bom`                         | Bom to verify                                   |
+| `bomr.maven.home`                  | Maven home directory                            |
+| `bomr.verify.ignored-dependencies` | Dependencies (artifactId:groupId) to ignore     |
+| `bomr.verify.repositories`         | Additional repositories to use for resolution   |
+
+The command takes no options and can be used to verify a bom as shown in the following
+example:
 
 ```
-Usage: bomr verify <pom> [<options>]
-
-Option              Description
-------              -----------
---ignore <String>   groupId:artifactId of a managed dependency to ignore
---repository <URI>  Additional repository to use for dependency resolution
+$ bomr.jar verify
 ```
-
-For example, to verify Spring Boot's bom:
-
-```
-$ bomr.jar verify spring-boot-project/spring-boot-dependencies/pom.xml \
-    --ignore=io.netty:netty-example \
-    --repository=https://repo.spring.io/libs-release
-```
-
-In the example above, the `libs-release` repository is required as `spring-data-gemfire`,
-which is managed by the bom, depends on GemFire artifacts that are not available in Maven
-Central.

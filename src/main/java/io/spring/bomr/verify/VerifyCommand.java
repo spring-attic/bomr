@@ -17,6 +17,8 @@
 package io.spring.bomr.verify;
 
 import java.io.File;
+import java.net.URI;
+import java.util.Set;
 
 import io.spring.bomr.Command;
 
@@ -30,8 +32,18 @@ class VerifyCommand implements Command {
 
 	private final BomVerifier verifier;
 
-	VerifyCommand(BomVerifier verifier) {
+	private final File bom;
+
+	private final Set<String> ignoredDependencies;
+
+	private final Set<URI> repositories;
+
+	VerifyCommand(BomVerifier verifier, File bom, Set<String> ignoredDependencies,
+			Set<URI> repositories) {
 		this.verifier = verifier;
+		this.bom = bom;
+		this.ignoredDependencies = ignoredDependencies;
+		this.repositories = repositories;
 	}
 
 	@Override
@@ -46,17 +58,25 @@ class VerifyCommand implements Command {
 
 	@Override
 	public void invoke(String[] args) {
-		VerifyCommandArguments arguments = VerifyCommandArguments.parse(args);
-		File pomFile = new File(arguments.getBom());
-		if (!pomFile.exists()) {
-			System.err.println("Fatal: pom file does not exist:");
+		if (this.bom == null) {
 			System.err.println();
-			System.err.println("  " + pomFile.getAbsolutePath());
+			System.err.println("Fatal: bomr.bom has not been configured");
+			System.err.println();
+			System.err.println("Check your onfiguration in .bomr/bomr.(properties|yaml)");
 			System.err.println();
 			System.exit(-1);
 		}
-		this.verifier.verify(pomFile, arguments.getIgnores(),
-				arguments.getRepositoryUris());
+		if (!this.bom.exists()) {
+			System.err.println();
+			System.err.println("Fatal: bom file does not exist:");
+			System.err.println();
+			System.err.println("  " + this.bom.getAbsolutePath());
+			System.err.println();
+			System.err.println("Check your onfiguration in .bomr/bomr.(properties|yaml)");
+			System.err.println();
+			System.exit(-1);
+		}
+		this.verifier.verify(this.bom, this.ignoredDependencies, this.repositories);
 	}
 
 }

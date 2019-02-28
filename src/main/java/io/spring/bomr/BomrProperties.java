@@ -14,28 +14,32 @@
  * limitations under the License.
  */
 
-package io.spring.bomr.upgrade;
+package io.spring.bomr;
 
-import io.spring.bomr.BomrProperties;
-import io.spring.bomr.github.GitHub;
+import java.io.File;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Configuration for Bomr's upgrade support.
+ * General {@link ConfigurationProperties configuration properties} that are not specific
+ * to any one command.
  *
  * @author Andy Wilkinson
  */
-@Configuration
-@EnableConfigurationProperties(UpgradeProperties.class)
-class UpgradeConfiguration {
+@ConfigurationProperties("bomr")
+public class BomrProperties {
 
-	@Bean
-	public UpgradeCommand upgradeCommand(GitHub gitHub,
-			UpgradeProperties upgradeProperties, BomrProperties bomrProperties) {
-		return new UpgradeCommand(gitHub, upgradeProperties, bomrProperties.getBom());
+	/**
+	 * Location of the pom file to be analyzed by Bomr.
+	 */
+	private File bom;
+
+	public File getBom() {
+		return this.bom;
+	}
+
+	public void setBom(File bom) {
+		this.bom = bom;
 	}
 
 }

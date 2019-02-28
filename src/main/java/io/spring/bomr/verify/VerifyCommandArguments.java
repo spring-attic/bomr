@@ -33,15 +33,11 @@ import joptsimple.OptionSet;
  */
 final class VerifyCommandArguments {
 
-	private final String bom;
-
 	private final Set<String> ignores;
 
 	private final Set<URI> repositoryUris;
 
-	private VerifyCommandArguments(String bom, Set<String> ignores,
-			Set<URI> repositoryUris) {
-		this.bom = bom;
+	private VerifyCommandArguments(Set<String> ignores, Set<URI> repositoryUris) {
 		this.ignores = ignores;
 		this.repositoryUris = repositoryUris;
 	}
@@ -58,11 +54,10 @@ final class VerifyCommandArguments {
 				.withRequiredArg().ofType(URI.class);
 		try {
 			OptionSet parsed = optionParser.parse(args);
-			if (parsed.nonOptionArguments().size() != 1) {
+			if (parsed.nonOptionArguments().size() != 0) {
 				showUsageAndExit(optionParser);
 			}
-			return new VerifyCommandArguments((String) parsed.nonOptionArguments().get(0),
-					new HashSet<>(parsed.valuesOf(ignoreSpec)),
+			return new VerifyCommandArguments(new HashSet<>(parsed.valuesOf(ignoreSpec)),
 					new HashSet<>(parsed.valuesOf(repositorySpec)));
 		}
 		catch (Exception ex) {
@@ -72,7 +67,7 @@ final class VerifyCommandArguments {
 	}
 
 	private static void showUsageAndExit(OptionParser optionParser) {
-		System.err.println("Usage: bomr verify <pom> [<options>]");
+		System.err.println("Usage: bomr verify [<options>]");
 		System.err.println();
 		try {
 			optionParser.printHelpOn(System.err);
@@ -82,10 +77,6 @@ final class VerifyCommandArguments {
 		}
 		System.err.println();
 		System.exit(-1);
-	}
-
-	String getBom() {
-		return this.bom;
 	}
 
 	Set<String> getIgnores() {

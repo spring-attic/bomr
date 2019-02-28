@@ -32,11 +32,14 @@ final class UpgradeCommand implements Command {
 
 	private final GitHub gitHub;
 
-	private final UpgradePolicy upgradePolicy;
+	private final UpgradeProperties properties;
 
-	UpgradeCommand(GitHub gitHub, UpgradeProperties upgradeProperties) {
+	private final File bom;
+
+	UpgradeCommand(GitHub gitHub, UpgradeProperties upgradeProperties, File bom) {
 		this.gitHub = gitHub;
-		this.upgradePolicy = upgradeProperties.getPolicy();
+		this.properties = upgradeProperties;
+		this.bom = bom;
 	}
 
 	@Override
@@ -52,19 +55,31 @@ final class UpgradeCommand implements Command {
 	@Override
 	public void invoke(String[] args) {
 		UpgradeCommandArguments arguments = UpgradeCommandArguments.parse(args);
-		File pomFile = new File(arguments.getBom());
-		if (!pomFile.exists()) {
-			System.err.println("Fatal: pom file does not exist:");
+		if (this.bom == null) {
 			System.err.println();
-			System.err.println("  " + pomFile.getAbsolutePath());
+			System.err.println("Fatal: bomr.bom has not been configured");
+			System.err.println();
+			System.err.println("Check your onfiguration in .bomr/bomr.(properties|yaml)");
+			System.err.println();
+			System.exit(-1);
+		}
+		if (!this.bom.exists()) {
+			System.err.println();
+			System.err.println("Fatal: bom file does not exist:");
+			System.err.println();
+			System.err.println("  " + this.bom.getAbsolutePath());
+			System.err.println();
+			System.err.println("Check your onfiguration in .bomr/bomr.(properties|yaml)");
 			System.err.println();
 			System.exit(-1);
 		}
 		new BomUpgrader(this.gitHub,
 				new MavenMetadataVersionResolver(
 						Arrays.asList("http://central.maven.org/maven2")),
-				this.upgradePolicy).upgrade(pomFile, arguments.getOrg(),
-						arguments.getRepository(), arguments.getLabels(),
+				this.properties.getPolicy()).upgrade(this.bom,
+						this.properties.getGithub().getOrganization(),
+						this.properties.getGithub().getRepository(),
+						this.properties.getGithub().getIssueLabels(),
 						arguments.getMilestone());
 	}
 

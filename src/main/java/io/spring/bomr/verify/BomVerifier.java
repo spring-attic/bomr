@@ -18,8 +18,6 @@ package io.spring.bomr.verify;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +31,6 @@ import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Mustache.Compiler;
 import com.samskivert.mustache.Mustache.TemplateLoader;
 import com.samskivert.mustache.Template;
-import com.samskivert.mustache.Template.Fragment;
 import io.spring.bomr.verify.MavenInvoker.MavenInvocationFailedException;
 
 import org.springframework.util.StringUtils;
@@ -97,18 +94,13 @@ class BomVerifier {
 			context.put("parentArtifactId", bom.getArtifactId());
 			context.put("parentVersion", bom.getVersion());
 			context.put("parentRelativePath", bomFile.getAbsolutePath());
-			context.put("classifierIfAvailable", new Mustache.Lambda() {
-
-				@Override
-				public void execute(Fragment frag, Writer out) throws IOException {
-					String classifier = frag.execute();
-					if (StringUtils.hasText(classifier)) {
-						out.append("<classifier>");
-						out.append(classifier);
-						out.append("</classifier>\n");
-					}
+			context.put("classifierIfAvailable", (Mustache.Lambda) (frag, out) -> {
+				String classifier = frag.execute();
+				if (StringUtils.hasText(classifier)) {
+					out.append("<classifier>");
+					out.append(classifier);
+					out.append("</classifier>\n");
 				}
-
 			});
 			File dependenciesPom = File.createTempFile("dependencies-", ".pom");
 			try (FileWriter writer = new FileWriter(dependenciesPom)) {

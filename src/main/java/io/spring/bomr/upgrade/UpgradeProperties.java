@@ -16,6 +16,8 @@
 
 package io.spring.bomr.upgrade;
 
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -25,6 +27,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "bomr.upgrade", ignoreUnknownFields = false)
 public class UpgradeProperties {
+
+	private final Github github = new Github();
 
 	/**
 	 * Policy that controls which versions are suggested as possible upgrades.
@@ -37,6 +41,56 @@ public class UpgradeProperties {
 
 	public void setPolicy(UpgradePolicy policy) {
 		this.policy = policy;
+	}
+
+	public Github getGithub() {
+		return this.github;
+	}
+
+	/**
+	 * Properties related to GitHub.
+	 */
+	public static class Github {
+
+		/**
+		 * Labels to apply to issues that are opened.
+		 */
+		private List<String> issueLabels;
+
+		/**
+		 * Organization on GitHub the owns the repository where issues should be opened.
+		 */
+		private String organization;
+
+		/**
+		 * Repository on GitHub where issues should be opened.
+		 */
+		private String repository;
+
+		public List<String> getIssueLabels() {
+			return this.issueLabels;
+		}
+
+		public void setIssueLabels(List<String> issueLabels) {
+			this.issueLabels = issueLabels;
+		}
+
+		public String getOrganization() {
+			return this.organization;
+		}
+
+		public void setOrganization(String organization) {
+			this.organization = organization;
+		}
+
+		public String getRepository() {
+			return this.repository;
+		}
+
+		public void setRepository(String repository) {
+			this.repository = repository;
+		}
+
 	}
 
 }
