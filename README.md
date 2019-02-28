@@ -148,7 +148,7 @@ you wish to upgrade. `upgrade` uses the following configuration properties:
 The command takes a single option:
 
 ```
-Usage: bomr upgrade <pom> <org> <repository> [<options>]
+Usage: bomr upgrade [<options>]
 
 Option                Description
 ------                -----------
