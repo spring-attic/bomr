@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.eclipse.aether.version.Version;
+import io.spring.bomr.upgrade.version.DependencyVersion;
 import org.junit.Test;
 
 import org.springframework.core.io.FileSystemResource;
@@ -52,15 +52,15 @@ public class MavenMetadataVersionResolverTests {
 						new FileSystemResource(new File(
 								"src/test/resources/spring-core-maven-metadata.xml")),
 						MediaType.TEXT_XML));
-		Set<Version> versions = new MavenMetadataVersionResolver(rest,
+		Set<DependencyVersion> versions = new MavenMetadataVersionResolver(rest,
 				Arrays.asList("http://central.maven.org/maven2")).resolveVersions(
 						new Module("org.springframework", "spring-core"));
-		assertThat(versions.stream().map(Version::toString).collect(Collectors.toList()))
-				.containsExactly("4.3.0.RELEASE", "4.3.1.RELEASE", "4.3.2.RELEASE",
-						"4.3.3.RELEASE", "4.3.4.RELEASE", "4.3.5.RELEASE",
-						"4.3.6.RELEASE", "4.3.7.RELEASE", "4.3.8.RELEASE",
-						"4.3.9.RELEASE", "4.3.10.RELEASE", "4.3.11.RELEASE",
-						"5.0.0.RELEASE");
+		assertThat(versions.stream().map(DependencyVersion::toString)
+				.collect(Collectors.toList())).containsExactly("4.3.0.RELEASE",
+						"4.3.1.RELEASE", "4.3.2.RELEASE", "4.3.3.RELEASE",
+						"4.3.4.RELEASE", "4.3.5.RELEASE", "4.3.6.RELEASE",
+						"4.3.7.RELEASE", "4.3.8.RELEASE", "4.3.9.RELEASE",
+						"4.3.10.RELEASE", "4.3.11.RELEASE", "5.0.0.RELEASE");
 	}
 
 	@Test
@@ -81,11 +81,12 @@ public class MavenMetadataVersionResolverTests {
 						new FileSystemResource(
 								new File("src/test/resources/repo2-maven-metadata.xml")),
 						MediaType.TEXT_XML));
-		Set<Version> versions = new MavenMetadataVersionResolver(rest,
+		Set<DependencyVersion> versions = new MavenMetadataVersionResolver(rest,
 				Arrays.asList("http://repo1.example.com", "http://repo2.example.com"))
 						.resolveVersions(new Module("com.example", "core"));
-		assertThat(versions.stream().map(Version::toString).collect(Collectors.toList()))
-				.containsExactly("1.0.0.RELEASE", "1.1.0.RELEASE");
+		assertThat(versions.stream().map(DependencyVersion::toString)
+				.collect(Collectors.toList())).containsExactly("1.0.0.RELEASE",
+						"1.1.0.RELEASE");
 	}
 
 }

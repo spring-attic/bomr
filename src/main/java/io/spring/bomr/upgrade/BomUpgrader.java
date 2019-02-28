@@ -36,9 +36,13 @@ final class BomUpgrader {
 
 	private final VersionResolver versionResolver;
 
-	BomUpgrader(GitHub gitHub, VersionResolver versionResolver) {
+	private final UpgradePolicy upgradePolicy;
+
+	BomUpgrader(GitHub gitHub, VersionResolver versionResolver,
+			UpgradePolicy upgradePolicy) {
 		this.gitHub = gitHub;
 		this.versionResolver = versionResolver;
+		this.upgradePolicy = upgradePolicy;
 	}
 
 	void upgrade(File bomFile, String organization, String repositoryName,
@@ -55,8 +59,8 @@ final class BomUpgrader {
 		}
 		Milestone milestone = determineMilestone(repository, milestoneName);
 		Bom bom = new Bom(bomFile);
-		List<Upgrade> upgrades = new InteractiveUpgradeResolver(this.versionResolver)
-				.resolveUpgrades(bom.getManagedProjects().values());
+		List<Upgrade> upgrades = new InteractiveUpgradeResolver(this.versionResolver,
+				this.upgradePolicy).resolveUpgrades(bom.getManagedProjects().values());
 		upgrades.forEach(
 				(upgrade) -> applyUpgrade(upgrade, bom, repository, labels, milestone));
 	}

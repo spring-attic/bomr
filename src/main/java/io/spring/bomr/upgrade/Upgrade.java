@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 the original author or authors.
+ * Copyright 2017-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package io.spring.bomr.upgrade;
 
+import io.spring.bomr.upgrade.version.DependencyVersion;
 import org.eclipse.aether.version.Version;
 
 /**
@@ -27,9 +28,9 @@ final class Upgrade {
 
 	private final Project project;
 
-	private final Version version;
+	private final DependencyVersion version;
 
-	Upgrade(Project project, Version version) {
+	Upgrade(Project project, DependencyVersion version) {
 		this.project = project;
 		this.version = version;
 	}
@@ -38,7 +39,7 @@ final class Upgrade {
 		return this.project;
 	}
 
-	Version getVersion() {
+	DependencyVersion getVersion() {
 		return this.version;
 	}
 

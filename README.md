@@ -41,6 +41,11 @@ And the location of Maven's home directory:
 bomr.maven.home=/usr/local/Cellar/maven/3.5.3/libexec
 ```
 
+Bomr also loads configuration from `.bomr/bomr.properties` or `.bomr/bomr.yaml` relative
+to the current working directory. This file is intended to be checked into source
+control. As such, it should not be used to configure credentials (such as those for
+GitHub) or settings that are specific to your machine (such as Maven's home directory).
+
 ## Commands
 
 ### artifacts
@@ -149,8 +154,18 @@ $ bomr.jar upgrade spring-boot-project/spring-boot-dependencies/pom.xml spring-p
     --milestone=2.0.5.RELEASE
 ```
 
-For each manged plugin or dependency in the bom with one or more newer versions, you will
-be prompted to select the version to use. Pressing enter without entering a number will
+For each managed plugin or dependency in the bom with one or more newer versions that
+match a configurable upgrade policy, you will be prompted to select the version to use.
+The upgrade policy should be configured in `./bomr/bomr.properties` or `./bomr/bomr.yaml`
+using the property `bomr.upgrade.policy`. The following values are supported:
+
+| Value                | Description                                               |
+| -------------------- | --------------------------------------------------------- |
+| `any`                | Any newer version                                         |
+| `same-major-version` | Newer versions with the same major as the current version |
+| `same-minor-version` | Newer versions with the same minor as the current version |
+
+When being prompted to select a version, pressing enter without entering a number will
 leave the managed version unchanged. Once the upgrades have been selected, a GitHub issue
 will be opened and a change committed for each. Having checked that the upgraded versions
 work and haven't introduced any deprecation warnings, the changes can be pushed.

@@ -22,21 +22,21 @@ import java.util.Arrays;
 import io.spring.bomr.Command;
 import io.spring.bomr.github.GitHub;
 
-import org.springframework.stereotype.Component;
-
 /**
  * A {@link Command} for upgrading the versions of the plugins and dependencies managed by
  * a bom.
  *
  * @author Andy Wilkinson
  */
-@Component
 final class UpgradeCommand implements Command {
 
 	private final GitHub gitHub;
 
-	UpgradeCommand(GitHub gitHub) {
+	private final UpgradePolicy upgradePolicy;
+
+	UpgradeCommand(GitHub gitHub, UpgradeProperties upgradeProperties) {
 		this.gitHub = gitHub;
+		this.upgradePolicy = upgradeProperties.getPolicy();
 	}
 
 	@Override
@@ -62,9 +62,10 @@ final class UpgradeCommand implements Command {
 		}
 		new BomUpgrader(this.gitHub,
 				new MavenMetadataVersionResolver(
-						Arrays.asList("http://central.maven.org/maven2"))).upgrade(
-								pomFile, arguments.getOrg(), arguments.getRepository(),
-								arguments.getLabels(), arguments.getMilestone());
+						Arrays.asList("http://central.maven.org/maven2")),
+				this.upgradePolicy).upgrade(pomFile, arguments.getOrg(),
+						arguments.getRepository(), arguments.getLabels(),
+						arguments.getMilestone());
 	}
 
 }

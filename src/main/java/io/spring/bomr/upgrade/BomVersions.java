@@ -22,9 +22,7 @@ import java.util.Map;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.eclipse.aether.util.version.GenericVersionScheme;
-import org.eclipse.aether.version.InvalidVersionSpecificationException;
-import org.eclipse.aether.version.Version;
+import io.spring.bomr.upgrade.version.DependencyVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -63,13 +61,7 @@ final class BomVersions {
 		if (value == null) {
 			return null;
 		}
-		try {
-			return new BomVersion(property,
-					new GenericVersionScheme().parseVersion(value));
-		}
-		catch (InvalidVersionSpecificationException ex) {
-			throw new RuntimeException(ex);
-		}
+		return new BomVersion(property, DependencyVersion.parse(value));
 	}
 
 	/**
@@ -80,9 +72,9 @@ final class BomVersions {
 
 		private final String property;
 
-		private final Version version;
+		private final DependencyVersion version;
 
-		BomVersion(String property, Version version) {
+		BomVersion(String property, DependencyVersion version) {
 			this.property = property;
 			this.version = version;
 		}
@@ -91,7 +83,7 @@ final class BomVersions {
 			return this.property;
 		}
 
-		Version getVersion() {
+		DependencyVersion getVersion() {
 			return this.version;
 		}
 

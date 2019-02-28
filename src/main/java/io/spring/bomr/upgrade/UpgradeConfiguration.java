@@ -16,22 +16,25 @@
 
 package io.spring.bomr.upgrade;
 
-import java.util.SortedSet;
+import io.spring.bomr.github.GitHub;
 
-import io.spring.bomr.upgrade.version.DependencyVersion;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * Resolves the available versions for a {@link Module}.
+ * Configuration for Bomr's upgrade support.
  *
  * @author Andy Wilkinson
  */
-interface VersionResolver {
+@Configuration
+@EnableConfigurationProperties(UpgradeProperties.class)
+class UpgradeConfiguration {
 
-	/**
-	 * Resolves the available versions for the given {@code module}.
-	 * @param module the module
-	 * @return the available versions
-	 */
-	SortedSet<DependencyVersion> resolveVersions(Module module);
+	@Bean
+	public UpgradeCommand upgradeCommand(GitHub gitHub,
+			UpgradeProperties upgradeProperties) {
+		return new UpgradeCommand(gitHub, upgradeProperties);
+	}
 
 }

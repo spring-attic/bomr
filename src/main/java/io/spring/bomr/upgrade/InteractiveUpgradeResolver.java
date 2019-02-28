@@ -26,7 +26,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import io.spring.bomr.upgrade.BomVersions.BomVersion;
-import org.eclipse.aether.version.Version;
+import io.spring.bomr.upgrade.version.DependencyVersion;
 
 import org.springframework.util.StringUtils;
 
@@ -40,8 +40,12 @@ final class InteractiveUpgradeResolver implements UpgradeResolver {
 
 	private final VersionResolver versionResolver;
 
-	InteractiveUpgradeResolver(VersionResolver versionResolver) {
+	private final UpgradePolicy upgradePolicy;
+
+	InteractiveUpgradeResolver(VersionResolver versionResolver,
+			UpgradePolicy upgradePolicy) {
 		this.versionResolver = versionResolver;
+		this.upgradePolicy = upgradePolicy;
 	}
 
 	@Override
@@ -51,11 +55,11 @@ final class InteractiveUpgradeResolver implements UpgradeResolver {
 	}
 
 	private Upgrade resolveUpgrade(Project project) {
-		Map<String, SortedSet<Version>> moduleVersions = new LinkedHashMap<>();
+		Map<String, SortedSet<DependencyVersion>> moduleVersions = new LinkedHashMap<>();
 		project.getModules()
 				.forEach((module) -> moduleVersions.put(module.getArtifactId(),
 						getLaterVersionsForModule(module, project.getVersion())));
-		List<Version> allVersions = moduleVersions.values().stream()
+		List<DependencyVersion> allVersions = moduleVersions.values().stream()
 				.flatMap(SortedSet::stream).distinct().collect(Collectors.toList());
 		if (allVersions.isEmpty()) {
 			return null;
@@ -82,8 +86,9 @@ final class InteractiveUpgradeResolver implements UpgradeResolver {
 		return new Upgrade(project, allVersions.get(selection - 1));
 	}
 
-	private List<String> getMissingModules(Map<String, SortedSet<Version>> moduleVersions,
-			Version version) {
+	private List<String> getMissingModules(
+			Map<String, SortedSet<DependencyVersion>> moduleVersions,
+			DependencyVersion version) {
 		List<String> missingModules = new ArrayList<>();
 		moduleVersions.forEach((name, versions) -> {
 			if (!versions.contains(version)) {
@@ -93,11 +98,12 @@ final class InteractiveUpgradeResolver implements UpgradeResolver {
 		return missingModules;
 	}
 
-	private SortedSet<Version> getLaterVersionsForModule(Module module,
+	private SortedSet<DependencyVersion> getLaterVersionsForModule(Module module,
 			BomVersion currentVersion) {
-		SortedSet<Version> versions = this.versionResolver.resolveVersions(module);
-		versions.removeIf(
-				(version) -> version.compareTo(currentVersion.getVersion()) <= 0);
+		SortedSet<DependencyVersion> versions = this.versionResolver
+				.resolveVersions(module);
+		versions.removeIf((candidate) -> !this.upgradePolicy.test(candidate,
+				currentVersion.getVersion()));
 		return versions;
 	}
 

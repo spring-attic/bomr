@@ -28,9 +28,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.eclipse.aether.util.version.GenericVersionScheme;
-import org.eclipse.aether.version.InvalidVersionSpecificationException;
-import org.eclipse.aether.version.Version;
+import io.spring.bomr.upgrade.version.DependencyVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -61,22 +59,13 @@ final class MavenMetadataVersionResolver implements VersionResolver {
 	}
 
 	@Override
-	public SortedSet<Version> resolveVersions(Module module) {
+	public SortedSet<DependencyVersion> resolveVersions(Module module) {
 		Set<String> versions = new HashSet<String>();
 		for (String repositoryUrl : this.repositoryUrls) {
 			versions.addAll(resolveVersions(module, repositoryUrl));
 		}
-		return new TreeSet<>(
-				versions.stream().map(this::parseVersion).collect(Collectors.toSet()));
-	}
-
-	private Version parseVersion(String versionString) {
-		try {
-			return new GenericVersionScheme().parseVersion(versionString);
-		}
-		catch (InvalidVersionSpecificationException ex) {
-			throw new IllegalArgumentException(ex);
-		}
+		return new TreeSet<>(versions.stream().map(DependencyVersion::parse)
+				.collect(Collectors.toSet()));
 	}
 
 	private Set<String> resolveVersions(Module module, String repositoryUrl) {

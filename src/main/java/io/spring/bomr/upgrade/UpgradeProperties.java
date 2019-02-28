@@ -16,22 +16,27 @@
 
 package io.spring.bomr.upgrade;
 
-import java.util.SortedSet;
-
-import io.spring.bomr.upgrade.version.DependencyVersion;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Resolves the available versions for a {@link Module}.
+ * Properties for configuring upgrades.
  *
  * @author Andy Wilkinson
  */
-interface VersionResolver {
+@ConfigurationProperties(prefix = "bomr.upgrade", ignoreUnknownFields = false)
+public class UpgradeProperties {
 
 	/**
-	 * Resolves the available versions for the given {@code module}.
-	 * @param module the module
-	 * @return the available versions
+	 * Policy that controls which versions are suggested as possible upgrades.
 	 */
-	SortedSet<DependencyVersion> resolveVersions(Module module);
+	private UpgradePolicy policy = UpgradePolicy.ANY;
+
+	public UpgradePolicy getPolicy() {
+		return this.policy;
+	}
+
+	public void setPolicy(UpgradePolicy policy) {
+		this.policy = policy;
+	}
 
 }
