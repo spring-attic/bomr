@@ -19,6 +19,7 @@ package io.spring.bomr.upgrade;
 import io.spring.bomr.BomrProperties;
 import io.spring.bomr.github.GitHub;
 
+import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +37,12 @@ class UpgradeConfiguration {
 	public UpgradeCommand upgradeCommand(GitHub gitHub,
 			UpgradeProperties upgradeProperties, BomrProperties bomrProperties) {
 		return new UpgradeCommand(gitHub, upgradeProperties, bomrProperties.getBom());
+	}
+
+	@Bean
+	@ConfigurationPropertiesBinding
+	public StringToVersionRangeConverter stringToVersionRangeConverter() {
+		return new StringToVersionRangeConverter();
 	}
 
 }

@@ -137,13 +137,15 @@ The `upgrade` command is used to upgrade the dependency and plugin management in
 bom. It should be run from the root of the cloned Git repository that contains the bom
 you wish to upgrade. `upgrade` uses the following configuration properties:
 
-| Property                           | Description                                     |
-| ---------------------------------- | ------------------------------------------------|
-| `bomr.bom`                         | Bom to upgrade                                  |
-| `bomr.upgrade.github.organization` | Organization of repository where upgrade issues should be opened |
-| `bomr.upgrade.github.repository`   | Repository where upgrade issues should be opened |
-| `bomr.upgrade.github.labels`       | Labels to apply to opened issues                |
-| `bomr.upgrade.policy`              | Policy used to identify eligible versions       |
+| Property                              | Description                                    |
+| ------------------------------------- | -----------------------------------------------|
+| `bomr.bom`                            | Bom to upgrade                                 |
+| `bomr.upgrade.github.organization`    | Organization of repository where upgrade issues should be opened |
+| `bomr.upgrade.github.repository`      | Repository where upgrade issues should be opened |
+| `bomr.upgrade.github.labels`          | Labels to apply to opened issues               |
+| `bomr.upgrade.policy`                 | Policy used to identify eligible versions      |
+| `bomr.upgrade.prohibited.[].project`  | Project identifier, based on its version property in the bom |
+| `bomr.upgrade.prohibited.[].versions` | List of prohibited versions                    |
 
 The command takes a single option:
 
@@ -176,6 +178,31 @@ When being prompted to select a version, pressing enter without entering a numbe
 leave the managed version unchanged. Once the upgrades have been selected, a GitHub issue
 will be opened and a change committed for each. Having checked that the upgraded versions
 work and haven't introduced any deprecation warnings, the changes can be pushed.
+
+#### Prohibited Versions
+
+Versions of a project can be prohibited if they are known to be bad. Prohibited versions
+will not be offered as possible updates, even if they match the configured upgrade
+policy. A prohibited version can be configured as shown in the following example:
+
+```yaml
+bomr:
+  bom: spring-boot-dependencies/pom.xml
+  upgrade:
+    prohibited:
+      - project: commons-collections
+        versions:
+          - '[20030101,)' # Old versions that use yyyymmdd format
+```
+
+The `project` property identifies the project with prohibited versions. The identifier
+is based on the project's `<name>.version` property in the bom. In this example, the
+version property is `commons-collections.version` so the identifier is
+`commons-collections`.
+
+The `versions` property provides a list of one or more version ranges that are
+prohibited. Maven's version range syntax is used. In this example, all versions with a
+major component equal to or greater than `20030101` are prohibited.
 
 ### verify
 

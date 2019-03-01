@@ -23,10 +23,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import io.spring.bomr.upgrade.BomVersions.BomVersion;
 import io.spring.bomr.upgrade.version.DependencyVersion;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
+import org.apache.maven.artifact.versioning.VersionRange;
 
 import org.springframework.util.StringUtils;
 
@@ -42,10 +45,14 @@ final class InteractiveUpgradeResolver implements UpgradeResolver {
 
 	private final UpgradePolicy upgradePolicy;
 
+	private final Map<String, ProhibitedVersions> prohibitedVersions;
+
 	InteractiveUpgradeResolver(VersionResolver versionResolver,
-			UpgradePolicy upgradePolicy) {
+			UpgradePolicy upgradePolicy, List<ProhibitedVersions> prohibitedVersions) {
 		this.versionResolver = versionResolver;
 		this.upgradePolicy = upgradePolicy;
+		this.prohibitedVersions = prohibitedVersions.stream().collect(
+				Collectors.toMap(ProhibitedVersions::getProject, Function.identity()));
 	}
 
 	@Override
@@ -56,11 +63,16 @@ final class InteractiveUpgradeResolver implements UpgradeResolver {
 
 	private Upgrade resolveUpgrade(Project project) {
 		Map<String, SortedSet<DependencyVersion>> moduleVersions = new LinkedHashMap<>();
+		ProhibitedVersions prohibitedVersions = this.prohibitedVersions
+				.get(project.getName().getRawName());
 		project.getModules()
 				.forEach((module) -> moduleVersions.put(module.getArtifactId(),
 						getLaterVersionsForModule(module, project.getVersion())));
 		List<DependencyVersion> allVersions = moduleVersions.values().stream()
-				.flatMap(SortedSet::stream).distinct().collect(Collectors.toList());
+				.flatMap(SortedSet::stream).distinct()
+				.filter((dependencyVersion) -> isPermitted(dependencyVersion,
+						prohibitedVersions))
+				.collect(Collectors.toList());
 		if (allVersions.isEmpty()) {
 			return null;
 		}
@@ -84,6 +96,20 @@ final class InteractiveUpgradeResolver implements UpgradeResolver {
 		}
 		int selection = Integer.parseInt(read);
 		return new Upgrade(project, allVersions.get(selection - 1));
+	}
+
+	private boolean isPermitted(DependencyVersion dependencyVersion,
+			ProhibitedVersions prohibitedVersions) {
+		if (prohibitedVersions == null) {
+			return true;
+		}
+		for (VersionRange range : prohibitedVersions.getVersions()) {
+			if (range.containsVersion(
+					new DefaultArtifactVersion(dependencyVersion.toString()))) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private List<String> getMissingModules(

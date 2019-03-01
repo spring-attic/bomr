@@ -38,11 +38,14 @@ final class BomUpgrader {
 
 	private final UpgradePolicy upgradePolicy;
 
+	private final List<ProhibitedVersions> prohibitedVersions;
+
 	BomUpgrader(GitHub gitHub, VersionResolver versionResolver,
-			UpgradePolicy upgradePolicy) {
+			UpgradePolicy upgradePolicy, List<ProhibitedVersions> prohibitedVersions) {
 		this.gitHub = gitHub;
 		this.versionResolver = versionResolver;
 		this.upgradePolicy = upgradePolicy;
+		this.prohibitedVersions = prohibitedVersions;
 	}
 
 	void upgrade(File bomFile, String organization, String repositoryName,
@@ -60,7 +63,8 @@ final class BomUpgrader {
 		Milestone milestone = determineMilestone(repository, milestoneName);
 		Bom bom = new Bom(bomFile);
 		List<Upgrade> upgrades = new InteractiveUpgradeResolver(this.versionResolver,
-				this.upgradePolicy).resolveUpgrades(bom.getManagedProjects().values());
+				this.upgradePolicy, this.prohibitedVersions)
+						.resolveUpgrades(bom.getManagedProjects().values());
 		upgrades.forEach(
 				(upgrade) -> applyUpgrade(upgrade, bom, repository, labels, milestone));
 	}

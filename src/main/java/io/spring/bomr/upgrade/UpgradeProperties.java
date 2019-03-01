@@ -16,6 +16,7 @@
 
 package io.spring.bomr.upgrade;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -29,6 +30,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class UpgradeProperties {
 
 	private final Github github = new Github();
+
+	private final List<ProhibitedVersions> prohibited = new ArrayList<>();
 
 	/**
 	 * Policy that controls which versions are suggested as possible upgrades.
@@ -45,6 +48,10 @@ public class UpgradeProperties {
 
 	public Github getGithub() {
 		return this.github;
+	}
+
+	public List<ProhibitedVersions> getProhibited() {
+		return this.prohibited;
 	}
 
 	/**

@@ -27,12 +27,15 @@ final class ProjectName {
 
 	private final String name;
 
+	private final String rawName;
+
 	ProjectName(BomVersion version) {
 		StringBuilder nameBuilder = new StringBuilder();
 		String name = version.getProperty();
 		if (name.endsWith(".version")) {
 			name = name.substring(0, name.length() - ".version".length());
 		}
+		this.rawName = name;
 		for (int i = 0; i < name.length(); i++) {
 			char c = name.charAt(i);
 			if (i == 0 || name.charAt(i - 1) == '-') {
@@ -44,6 +47,10 @@ final class ProjectName {
 			nameBuilder.append(c);
 		}
 		this.name = nameBuilder.toString();
+	}
+
+	String getRawName() {
+		return this.rawName;
 	}
 
 	@Override
