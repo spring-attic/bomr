@@ -53,7 +53,7 @@ public class MavenMetadataVersionResolverTests {
 								"src/test/resources/spring-core-maven-metadata.xml")),
 						MediaType.TEXT_XML));
 		Set<DependencyVersion> versions = new MavenMetadataVersionResolver(rest,
-				Arrays.asList("http://central.maven.org/maven2")).resolveVersions(
+				Arrays.asList("/maven2/")).resolveVersions(
 						new Module("org.springframework", "spring-core"));
 		assertThat(versions.stream().map(DependencyVersion::toString)
 				.collect(Collectors.toList())).containsExactly("4.3.0.RELEASE",
@@ -68,21 +68,21 @@ public class MavenMetadataVersionResolverTests {
 		RestTemplate rest = new RestTemplate();
 		MockRestServiceServer server = MockRestServiceServer.bindTo(rest).build();
 		server.expect(MockRestRequestMatchers.requestTo(
-				"http://repo1.example.com/com/example/core/maven-metadata.xml"))
+				"https://repo1.example.com/com/example/core/maven-metadata.xml"))
 				.andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
 				.andRespond(MockRestResponseCreators.withSuccess(
 						new FileSystemResource(
 								new File("src/test/resources/repo1-maven-metadata.xml")),
 						MediaType.TEXT_XML));
 		server.expect(MockRestRequestMatchers.requestTo(
-				"http://repo2.example.com/com/example/core/maven-metadata.xml"))
+				"https://repo2.example.com/com/example/core/maven-metadata.xml"))
 				.andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
 				.andRespond(MockRestResponseCreators.withSuccess(
 						new FileSystemResource(
 								new File("src/test/resources/repo2-maven-metadata.xml")),
 						MediaType.TEXT_XML));
 		Set<DependencyVersion> versions = new MavenMetadataVersionResolver(rest,
-				Arrays.asList("http://repo1.example.com", "http://repo2.example.com"))
+				Arrays.asList("https://repo1.example.com", "https://repo2.example.com"))
 						.resolveVersions(new Module("com.example", "core"));
 		assertThat(versions.stream().map(DependencyVersion::toString)
 				.collect(Collectors.toList())).containsExactly("1.0.0.RELEASE",
