@@ -75,7 +75,7 @@ final class UpgradeCommand implements Command {
 		}
 		new BomUpgrader(this.gitHub,
 				new MavenMetadataVersionResolver(
-						Arrays.asList("http://central.maven.org/maven2")),
+						Arrays.asList("/maven2/")),
 				this.properties.getPolicy(), this.properties.getProhibited()).upgrade(
 						this.bom, this.properties.getGithub().getOrganization(),
 						this.properties.getGithub().getRepository(),
