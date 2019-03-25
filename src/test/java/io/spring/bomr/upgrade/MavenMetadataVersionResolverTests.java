@@ -46,14 +46,14 @@ public class MavenMetadataVersionResolverTests {
 		RestTemplate rest = new RestTemplate();
 		MockRestServiceServer server = MockRestServiceServer.bindTo(rest).build();
 		server.expect(MockRestRequestMatchers.requestTo(
-				"http://central.maven.org/maven2/org/springframework/spring-core/maven-metadata.xml"))
+				"https://repo.example.com/maven2/org/springframework/spring-core/maven-metadata.xml"))
 				.andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
 				.andRespond(MockRestResponseCreators.withSuccess(
 						new FileSystemResource(new File(
 								"src/test/resources/spring-core-maven-metadata.xml")),
 						MediaType.TEXT_XML));
 		Set<DependencyVersion> versions = new MavenMetadataVersionResolver(rest,
-				Arrays.asList("/maven2/")).resolveVersions(
+				Arrays.asList("https://repo.example.com/maven2/")).resolveVersions(
 						new Module("org.springframework", "spring-core"));
 		assertThat(versions.stream().map(DependencyVersion::toString)
 				.collect(Collectors.toList())).containsExactly("4.3.0.RELEASE",
