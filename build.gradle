@@ -1,0 +1,65 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.14'
+	}
+}
+
+plugins {
+	id 'checkstyle'
+	id 'java'
+	id 'org.springframework.boot' version '2.1.6.RELEASE'
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'io.spring.javaformat'
+
+repositories {
+	mavenCentral()
+}
+
+group = 'io.spring.bomr'
+version = '0.1.0-SNAPSHOT'
+
+sourceCompatibility = '1.8'
+
+dependencyManagement {
+	dependencies {
+		dependency 'com.samskivert:jmustache:1.14'
+		dependency 'io.spring.javaformat:spring-javaformat-checkstyle:0.0.14'
+		dependency 'net.sf.jopt-simple:jopt-simple:5.0.4'
+		dependency 'org.apache.maven:maven-artifact:3.6.0'
+		dependency 'org.apache.maven.resolver:maven-resolver-util:1.3.1'
+		dependency 'org.apache.maven.shared:maven-invoker:3.0.1'
+	}
+}
+
+dependencies {
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	checkstyle 'io.spring.javaformat:spring-javaformat-checkstyle'
+
+	compile 'com.fasterxml.jackson.core:jackson-databind'
+	compile 'com.samskivert:jmustache'
+	compile 'net.sf.jopt-simple:jopt-simple'
+	compile 'org.apache.maven:maven-artifact'
+	compile 'org.apache.maven.resolver:maven-resolver-util'
+	compile 'org.apache.maven.shared:maven-invoker'
+	compile 'org.springframework:spring-web'
+	compile 'org.springframework.boot:spring-boot-starter'
+
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+bootJar {
+	launchScript {
+		script = file('launch.script')
+	}
+}
+
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+

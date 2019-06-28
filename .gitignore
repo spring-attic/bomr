@@ -3,9 +3,11 @@
 .factorypath
 .project
 .settings
+/bin/
 
 # IntelliJ IDEA
 .idea
 *.iml
 
-target
+/build/
+/.gradle/
