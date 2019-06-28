@@ -18,7 +18,6 @@ package io.spring.bomr.artifacts;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Configuration for Bomr's artifacts support.
@@ -30,12 +29,12 @@ class ArtifactsConfiguration {
 
 	@Bean
 	public ArtifactsCommand artifactsCommand() {
-		return new ArtifactsCommand(new ArtifactsFinder(new RestTemplate()));
+		return new ArtifactsCommand();
 	}
 
 	@Bean
 	public ArtifactsDeltaCommand artifactsDeltaCommand() {
-		return new ArtifactsDeltaCommand(new ArtifactsFinder(new RestTemplate()));
+		return new ArtifactsDeltaCommand();
 	}
 
 }

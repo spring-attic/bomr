@@ -37,11 +37,11 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 /**
- * Tests for {@link ArtifactsFinder}.
+ * Tests for {@link MavenRepositoryArtifactsFinder}.
  *
  * @author Andy Wilkinson
  */
-public class ArtifactsFinderTests {
+public class MavenRepositoryArtifactsFinderTests {
 
 	private final RestTemplate rest = new RestTemplate();
 
@@ -51,8 +51,8 @@ public class ArtifactsFinderTests {
 	@Test
 	public void findReturnsNamesOfArtifactsWithMatchingVersionAndJarArtifact() {
 		configureExpectations(new File("src/test/resources/artifacts/org/quartz-scheduler/"));
-		Set<String> artifacts = new ArtifactsFinder(this.rest).find(URI.create("https://repo1.maven.org/maven2/"),
-				"org.quartz-scheduler", "2.3.0");
+		Set<String> artifacts = new MavenRepositoryArtifactsFinder(this.rest,
+				URI.create("https://repo1.maven.org/maven2/")).find("org.quartz-scheduler", "2.3.0");
 		assertThat(artifacts).containsExactly("quartz", "quartz-jobs");
 	}
 

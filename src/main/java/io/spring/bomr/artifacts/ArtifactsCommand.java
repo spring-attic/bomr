@@ -30,12 +30,6 @@ import org.springframework.util.StringUtils;
  */
 class ArtifactsCommand implements Command {
 
-	private final ArtifactsFinder artifactsFinder;
-
-	ArtifactsCommand(ArtifactsFinder artifactsFinder) {
-		this.artifactsFinder = artifactsFinder;
-	}
-
 	@Override
 	public String getName() {
 		return "artifacts";
@@ -49,7 +43,7 @@ class ArtifactsCommand implements Command {
 	@Override
 	public void invoke(String[] args) {
 		ArtifactsCommandArguments arguments = ArtifactsCommandArguments.parse(args);
-		Set<String> artifacts = this.artifactsFinder.find(arguments.getRepository(), arguments.getGroup(),
+		Set<String> artifacts = ArtifactsFinder.forRepository(arguments.getRepository()).find(arguments.getGroup(),
 				arguments.getVersion());
 		artifacts.forEach((artifact) -> {
 			System.out.println("<dependency>");

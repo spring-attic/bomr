@@ -32,12 +32,6 @@ import org.springframework.util.StringUtils;
  */
 public class ArtifactsDeltaCommand implements Command {
 
-	private final ArtifactsFinder artifactsFinder;
-
-	ArtifactsDeltaCommand(ArtifactsFinder artifactsFinder) {
-		this.artifactsFinder = artifactsFinder;
-	}
-
 	@Override
 	public String getName() {
 		return "artifacts-delta";
@@ -52,10 +46,9 @@ public class ArtifactsDeltaCommand implements Command {
 	@Override
 	public void invoke(String[] args) {
 		ArtifactsDeltaCommandArguments arguments = ArtifactsDeltaCommandArguments.parse(args);
-		Set<String> oldArtifacts = this.artifactsFinder.find(arguments.getRepository(), arguments.getGroup(),
-				arguments.getOldVersion());
-		Set<String> newArtifacts = this.artifactsFinder.find(arguments.getRepository(), arguments.getGroup(),
-				arguments.getNewVersion());
+		ArtifactsFinder artifactsFinder = ArtifactsFinder.forRepository(arguments.getRepository());
+		Set<String> oldArtifacts = artifactsFinder.find(arguments.getGroup(), arguments.getOldVersion());
+		Set<String> newArtifacts = artifactsFinder.find(arguments.getGroup(), arguments.getNewVersion());
 		Set<String> removedArtifacts = difference(oldArtifacts, newArtifacts);
 		System.out.println("Removed:");
 		System.out.println();

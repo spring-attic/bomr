@@ -27,6 +27,7 @@ sourceCompatibility = '1.8'
 
 dependencyManagement {
 	dependencies {
+		dependency 'com.jayway.jsonpath:json-path:2.4.0'
 		dependency 'com.samskivert:jmustache:1.14'
 		dependency 'io.spring.javaformat:spring-javaformat-checkstyle:0.0.14'
 		dependency 'net.sf.jopt-simple:jopt-simple:5.0.4'
@@ -42,6 +43,7 @@ dependencies {
 	checkstyle 'io.spring.javaformat:spring-javaformat-checkstyle'
 
 	compile 'com.fasterxml.jackson.core:jackson-databind'
+	compile 'com.jayway.jsonpath:json-path'
 	compile 'com.samskivert:jmustache'
 	compile 'net.sf.jopt-simple:jopt-simple'
 	compile 'org.apache.maven:maven-artifact'

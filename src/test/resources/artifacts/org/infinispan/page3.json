@@ -1,0 +1,138 @@
+{
+  "responseHeader": {
+    "status": 0,
+    "QTime": 3,
+    "params": {
+      "q": "g:org.infinispan AND v:9.4.15.Final AND p:jar",
+      "core": "",
+      "indent": "off",
+      "fl": "id,g,a,v,p,ec,timestamp,tags",
+      "start": "40",
+      "sort": "score desc,timestamp desc,g asc,a asc,v desc",
+      "rows": "20",
+      "wt": "json",
+      "version": "2.2"
+    }
+  },
+  "response": {
+    "numFound": 43,
+    "start": 40,
+    "docs": [
+      {
+        "id": "org.infinispan:infinispan-server-rest:9.4.15.Final",
+        "g": "org.infinispan",
+        "a": "infinispan-server-rest",
+        "v": "9.4.15.Final",
+        "p": "jar",
+        "timestamp": 1560795577000,
+        "ec": [
+          "-sources.jar",
+          "-test-sources.jar",
+          "-tests.jar",
+          ".jar",
+          ".pom"
+        ],
+        "tags": [
+          "infinispan",
+          "rest",
+          "interface"
+        ]
+      },
+      {
+        "id": "org.infinispan:infinispan-clustered-lock:9.4.15.Final",
+        "g": "org.infinispan",
+        "a": "infinispan-clustered-lock",
+        "v": "9.4.15.Final",
+        "p": "jar",
+        "timestamp": 1560795563000,
+        "ec": [
+          "-sources.jar",
+          "-test-sources.jar",
+          ".jar",
+          "-tests.jar",
+          ".pom"
+        ],
+        "tags": [
+          "module",
+          "clustered",
+          "infinispan",
+          "lock"
+        ]
+      },
+      {
+        "id": "org.infinispan:infinispan-spring5-common:9.4.15.Final",
+        "g": "org.infinispan",
+        "a": "infinispan-spring5-common",
+        "v": "9.4.15.Final",
+        "p": "jar",
+        "timestamp": 1560795538000,
+        "ec": [
+          "-sources.jar",
+          "-test-sources.jar",
+          ".jar",
+          "-tests.jar",
+          ".pom"
+        ],
+        "tags": [
+          "distributed",
+          "used",
+          "same",
+          "springframework",
+          "namespace",
+          "accesses",
+          "over",
+          "primary",
+          "features",
+          "facilitating",
+          "factorybeans",
+          "central",
+          "support",
+          "defined",
+          "offers",
+          "definitions",
+          "project",
+          "powered",
+          "infinispan",
+          "abstraction",
+          "backed",
+          "components",
+          "outside",
+          "creation",
+          "remotecachemanager",
+          "cachemanager",
+          "remotely",
+          "from",
+          "running",
+          "spring",
+          "embeddedcachemanager",
+          "network",
+          "shortcut",
+          "allowing",
+          "integration",
+          "performance",
+          "above",
+          "various",
+          "colocated",
+          "jndi",
+          "retrieved",
+          "caching",
+          "classes",
+          "application",
+          "cache",
+          "needs",
+          "your",
+          "provides",
+          "addition",
+          "access",
+          "cachecontainer",
+          "reference",
+          "implementation",
+          "context",
+          "core",
+          "within",
+          "high"
+        ]
+      }
+    ]
+  }
+}

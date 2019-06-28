@@ -17,80 +17,31 @@
 package io.spring.bomr.artifacts;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.RestTemplate;
 
 /**
- * Finds artifacts in a group with a particular version that are available in Maven
- * Central.
+ * An {@code ArtifactsFinder} is used to find artifacts in a repository.
  *
  * @author Andy Wilkinson
  */
-class ArtifactsFinder {
+interface ArtifactsFinder {
 
-	private final Pattern linkPattern = Pattern.compile("<a href=\"(.*?/)\".*>.*/</a>");
+	URI MAVEN_CENTRAL = URI.create("https://repo1.maven.org/maven2/");
 
-	private final RestOperations rest;
-
-	ArtifactsFinder(RestOperations rest) {
-		this.rest = rest;
+	static ArtifactsFinder forRepository(URI repository) {
+		return repository.equals(MAVEN_CENTRAL) ? new MavenCentralSearchArtifactsFinder(new RestTemplate())
+				: new MavenRepositoryArtifactsFinder(new RestTemplate(), repository);
 	}
 
-	Set<String> find(URI repository, String group, String version) {
-		URI groupUri = repository.resolve(group.replace('.', '/') + "/");
-		List<String> artifactLinks = extractLinks(groupUri);
-		Set<String> artifacts = new TreeSet<>();
-		for (String artifactLink : artifactLinks) {
-			List<String> versionLinks = extractLinks(groupUri.resolve(artifactLink));
-			if (versionLinks.contains(version + "/")) {
-				String artifact = artifactLink.substring(0, artifactLink.length() - 1);
-				if (jarArtifactExists(group, artifact, version)) {
-					artifacts.add(artifact);
-				}
-			}
-		}
-		return artifacts;
-	}
-
-	private List<String> extractLinks(URI uri) {
-		try {
-			ResponseEntity<String> response = this.rest.getForEntity(uri, String.class);
-			String body = response.getBody();
-			List<String> links = new ArrayList<String>();
-			Matcher matcher = this.linkPattern.matcher(body);
-			while (matcher.find()) {
-				String candidate = matcher.group(1);
-				if (!"../".equals(candidate)) {
-					links.add(candidate);
-				}
-			}
-			return links;
-		}
-		catch (RestClientException ex) {
-			System.err.println(uri + " " + ex.getMessage());
-			System.exit(-1);
-			return null;
-		}
-	}
-
-	private boolean jarArtifactExists(String group, String artifact, String version) {
-		String jarUrl = "https://repo1.maven.org/maven2/" + group.replace('.', '/') + "/" + artifact + "/" + version
-				+ "/" + artifact + "-" + version + ".jar";
-		try {
-			this.rest.headForHeaders(jarUrl);
-			return true;
-		}
-		catch (RestClientException ex) {
-			return false;
-		}
-	}
+	/**
+	 * Finds the artifacts with the given {@code group} and {@code version} in the
+	 * repository.
+	 * @param group the group
+	 * @param version the version
+	 * @return the artifacts in the group with the required version
+	 */
+	Set<String> find(String group, String version);
 
 }
