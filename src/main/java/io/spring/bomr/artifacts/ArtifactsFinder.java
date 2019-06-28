@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 the original author or authors.
+ * Copyright 2017-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,8 +82,8 @@ class ArtifactsFinder {
 	}
 
 	private boolean jarArtifactExists(String group, String artifact, String version) {
-		String jarUrl = "https://repo1.maven.org/maven2/" + group.replace('.', '/') + "/"
-				+ artifact + "/" + version + "/" + artifact + "-" + version + ".jar";
+		String jarUrl = "https://repo1.maven.org/maven2/" + group.replace('.', '/') + "/" + artifact + "/" + version
+				+ "/" + artifact + "-" + version + ".jar";
 		try {
 			this.rest.headForHeaders(jarUrl);
 			return true;

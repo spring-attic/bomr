@@ -38,12 +38,11 @@ final class BomVersions {
 
 	BomVersions(Document bom) {
 		try {
-			NodeList propertyNodes = (NodeList) XPathFactory.newInstance().newXPath()
-					.evaluate("/project/properties/*", bom, XPathConstants.NODESET);
+			NodeList propertyNodes = (NodeList) XPathFactory.newInstance().newXPath().evaluate("/project/properties/*",
+					bom, XPathConstants.NODESET);
 			for (int i = 0; i < propertyNodes.getLength(); i++) {
 				Node propertyNode = propertyNodes.item(i);
-				this.versions.put(propertyNode.getNodeName(),
-						propertyNode.getTextContent());
+				this.versions.put(propertyNode.getNodeName(), propertyNode.getTextContent());
 			}
 		}
 		catch (Exception ex) {

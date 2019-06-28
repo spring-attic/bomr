@@ -49,13 +49,11 @@ class ArtifactVersionDependencyVersion extends AbstractDependencyVersion {
 		if (other instanceof ReleaseTrainDependencyVersion) {
 			return false;
 		}
-		return extractArtifactVersionDependencyVersion(other)
-				.map(this::isSameMajorAndNewerThan).orElse(true);
+		return extractArtifactVersionDependencyVersion(other).map(this::isSameMajorAndNewerThan).orElse(true);
 	}
 
 	private boolean isSameMajorAndNewerThan(ArtifactVersionDependencyVersion other) {
-		return this.artifactVersion.getMajorVersion() == other.artifactVersion
-				.getMajorVersion() && isNewerThan(other);
+		return this.artifactVersion.getMajorVersion() == other.artifactVersion.getMajorVersion() && isNewerThan(other);
 	}
 
 	@Override
@@ -63,15 +61,12 @@ class ArtifactVersionDependencyVersion extends AbstractDependencyVersion {
 		if (other instanceof ReleaseTrainDependencyVersion) {
 			return false;
 		}
-		return extractArtifactVersionDependencyVersion(other)
-				.map(this::isSameMinorAndNewerThan).orElse(true);
+		return extractArtifactVersionDependencyVersion(other).map(this::isSameMinorAndNewerThan).orElse(true);
 	}
 
 	private boolean isSameMinorAndNewerThan(ArtifactVersionDependencyVersion other) {
-		return this.artifactVersion.getMajorVersion() == other.artifactVersion
-				.getMajorVersion()
-				&& this.artifactVersion.getMinorVersion() == other.artifactVersion
-						.getMinorVersion()
+		return this.artifactVersion.getMajorVersion() == other.artifactVersion.getMajorVersion()
+				&& this.artifactVersion.getMinorVersion() == other.artifactVersion.getMinorVersion()
 				&& isNewerThan(other);
 	}
 
@@ -91,8 +86,7 @@ class ArtifactVersionDependencyVersion extends AbstractDependencyVersion {
 
 	static ArtifactVersionDependencyVersion parse(String version) {
 		ArtifactVersion artifactVersion = new DefaultArtifactVersion(version);
-		if (artifactVersion.getQualifier() != null
-				&& artifactVersion.getQualifier().equals(version)) {
+		if (artifactVersion.getQualifier() != null && artifactVersion.getQualifier().equals(version)) {
 			return null;
 		}
 		return new ArtifactVersionDependencyVersion(artifactVersion);

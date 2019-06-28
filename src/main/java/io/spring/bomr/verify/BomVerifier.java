@@ -48,8 +48,7 @@ class BomVerifier {
 
 	private final TemplateLoader templateLoader;
 
-	BomVerifier(MavenInvoker mavenInvoker, Compiler compiler,
-			TemplateLoader templateLoader) {
+	BomVerifier(MavenInvoker mavenInvoker, Compiler compiler, TemplateLoader templateLoader) {
 		this.mavenInvoker = mavenInvoker;
 		this.compiler = compiler;
 		this.templateLoader = templateLoader;
@@ -57,18 +56,15 @@ class BomVerifier {
 
 	void verify(File bom, Set<String> ignoredDependencies, Set<URI> repositoryUris) {
 		VerifiableBom verifiableBom = new VerifiableBom(this.mavenInvoker, bom);
-		List<ManagedDependency> dependenciesToVerify = verifiableBom
-				.getManagedDependencies().stream()
-				.filter((dependency) -> !ignoredDependencies.contains(
-						dependency.getGroupId() + ":" + dependency.getArtifactId()))
+		List<ManagedDependency> dependenciesToVerify = verifiableBom.getManagedDependencies().stream()
+				.filter((dependency) -> !ignoredDependencies
+						.contains(dependency.getGroupId() + ":" + dependency.getArtifactId()))
 				.collect(Collectors.toList());
-		File dependenciesPom = createDependenciesPom(bom, verifiableBom,
-				dependenciesToVerify, repositoryUris.stream().map(Repository::new)
-						.collect(Collectors.toList()));
+		File dependenciesPom = createDependenciesPom(bom, verifiableBom, dependenciesToVerify,
+				repositoryUris.stream().map(Repository::new).collect(Collectors.toList()));
 		System.out.print("Verifying " + dependenciesToVerify.size() + " dependencies...");
 		try {
-			this.mavenInvoker.invoke(dependenciesPom, new Properties(),
-					"dependency:list");
+			this.mavenInvoker.invoke(dependenciesPom, new Properties(), "dependency:list");
 			System.out.println(" Done.");
 		}
 		catch (MavenInvocationFailedException ex) {
@@ -79,12 +75,10 @@ class BomVerifier {
 		}
 	}
 
-	private File createDependenciesPom(File bomFile, VerifiableBom bom,
-			List<ManagedDependency> dependenciesToVerify,
+	private File createDependenciesPom(File bomFile, VerifiableBom bom, List<ManagedDependency> dependenciesToVerify,
 			List<Repository> additionalRepositories) {
 		try {
-			Template template = this.compiler
-					.compile(this.templateLoader.getTemplate("bom-dependencies"));
+			Template template = this.compiler.compile(this.templateLoader.getTemplate("bom-dependencies"));
 			Map<String, Object> context = new HashMap<>();
 			context.put("dependencies", dependenciesToVerify);
 			List<Repository> repositories = new ArrayList<>(bom.getRepositories());

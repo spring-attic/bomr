@@ -66,14 +66,11 @@ final class Bom {
 		}
 	}
 
-	private Map<ProjectName, Project> extractManagedProjects(Document bom,
-			BomVersions versions) {
+	private Map<ProjectName, Project> extractManagedProjects(Document bom, BomVersions versions) {
 		Map<ProjectName, Project> projects = new LinkedHashMap<>();
 		try {
-			collectProjects("/project/dependencyManagement/dependencies/dependency",
-					projects, bom, versions);
-			collectProjects("/project/build/pluginManagement/plugins/plugin", projects,
-					bom, versions);
+			collectProjects("/project/dependencyManagement/dependencies/dependency", projects, bom, versions);
+			collectProjects("/project/build/pluginManagement/plugins/plugin", projects, bom, versions);
 		}
 		catch (Exception ex) {
 			throw new RuntimeException(ex);
@@ -81,24 +78,20 @@ final class Bom {
 		return projects;
 	}
 
-	private void collectProjects(String managedExpression,
-			Map<ProjectName, Project> projects, Document bom, BomVersions versions)
-			throws XPathExpressionException {
+	private void collectProjects(String managedExpression, Map<ProjectName, Project> projects, Document bom,
+			BomVersions versions) throws XPathExpressionException {
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		String projectGroupId = xpath.evaluate("/project/groupId/text()", bom);
-		NodeList managedDependencies = (NodeList) xpath.evaluate(managedExpression, bom,
-				XPathConstants.NODESET);
+		NodeList managedDependencies = (NodeList) xpath.evaluate(managedExpression, bom, XPathConstants.NODESET);
 		for (int i = 0; i < managedDependencies.getLength(); i++) {
 			Node managedDependency = managedDependencies.item(i);
 			String groupId = xpath.evaluate("groupId/text()", managedDependency);
 			if (!groupId.equals(projectGroupId)) {
-				BomVersion version = versions
-						.resolve(xpath.evaluate("version/text()", managedDependency));
+				BomVersion version = versions.resolve(xpath.evaluate("version/text()", managedDependency));
 				if (version != null) {
 					Project project = projects.computeIfAbsent(new ProjectName(version),
 							(projectName) -> new Project(projectName, version));
-					String artifactId = xpath.evaluate("artifactId/text()",
-							managedDependency);
+					String artifactId = xpath.evaluate("artifactId/text()", managedDependency);
 					project.getModules().add(new Module(groupId, artifactId));
 				}
 			}
@@ -113,10 +106,9 @@ final class Bom {
 	void applyUpgrade(Upgrade upgrade) {
 		String versionProperty = upgrade.getProject().getVersion().getProperty();
 		try {
-			String updatedBom = FileCopyUtils.copyToString(new FileReader(this.bomFile))
-					.replaceAll("<" + versionProperty + ">.*</" + versionProperty + ">",
-							"<" + versionProperty + ">" + upgrade.getVersion() + "</"
-									+ versionProperty + ">");
+			String updatedBom = FileCopyUtils.copyToString(new FileReader(this.bomFile)).replaceAll(
+					"<" + versionProperty + ">.*</" + versionProperty + ">",
+					"<" + versionProperty + ">" + upgrade.getVersion() + "</" + versionProperty + ">");
 			FileCopyUtils.copy(updatedBom, new FileWriter(this.bomFile));
 		}
 		catch (IOException ex) {
@@ -126,12 +118,10 @@ final class Bom {
 
 	void commit(String message) {
 		try {
-			if (new ProcessBuilder().command("git", "add", this.bomFile.getAbsolutePath())
-					.start().waitFor() != 0) {
+			if (new ProcessBuilder().command("git", "add", this.bomFile.getAbsolutePath()).start().waitFor() != 0) {
 				throw new IllegalStateException("git add failed");
 			}
-			if (new ProcessBuilder().command("git", "commit", "-m", message).start()
-					.waitFor() != 0) {
+			if (new ProcessBuilder().command("git", "commit", "-m", message).start().waitFor() != 0) {
 				throw new IllegalStateException("git commit failed");
 			}
 		}

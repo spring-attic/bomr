@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 the original author or authors.
+ * Copyright 2017-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,15 +50,11 @@ final class StandardGitHub implements GitHub {
 		restTemplate.getInterceptors().add(new ClientHttpRequestInterceptor() {
 
 			@Override
-			public ClientHttpResponse intercept(HttpRequest request, byte[] body,
-					ClientHttpRequestExecution execution) throws IOException {
+			public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
+					throws IOException {
 				request.getHeaders().add("User-Agent", StandardGitHub.this.username);
-				request.getHeaders()
-						.add("Authorization",
-								"Basic " + Base64.getEncoder()
-										.encodeToString((StandardGitHub.this.username
-												+ ":" + StandardGitHub.this.password)
-														.getBytes()));
+				request.getHeaders().add("Authorization", "Basic " + Base64.getEncoder().encodeToString(
+						(StandardGitHub.this.username + ":" + StandardGitHub.this.password).getBytes()));
 				request.getHeaders().add("Accept", MediaType.APPLICATION_JSON_VALUE);
 				return execution.execute(request, body);
 			}

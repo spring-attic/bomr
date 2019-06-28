@@ -34,10 +34,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class BomrApplication {
 
 	public static void main(String[] args) {
-		ConfigurableApplicationContext context = new SpringApplicationBuilder(
-				BomrApplication.class).properties("logging.level.root=warn",
-						"spring.config.location=file:.bomr/", "spring.config.name=bomr")
-						.bannerMode(Mode.OFF).run(args);
+		ConfigurableApplicationContext context = new SpringApplicationBuilder(BomrApplication.class)
+				.properties("logging.level.root=warn", "spring.config.location=file:.bomr/", "spring.config.name=bomr")
+				.bannerMode(Mode.OFF).run(args);
 		Commands commands = context.getBean(Commands.class);
 		if (args.length == 0) {
 			displayUsage();

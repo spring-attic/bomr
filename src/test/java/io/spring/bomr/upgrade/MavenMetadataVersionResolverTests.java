@@ -45,48 +45,42 @@ public class MavenMetadataVersionResolverTests {
 	public void versionsAreResolvedFromMavenMetadata() {
 		RestTemplate rest = new RestTemplate();
 		MockRestServiceServer server = MockRestServiceServer.bindTo(rest).build();
-		server.expect(MockRestRequestMatchers.requestTo(
-				"https://repo.example.com/maven2/org/springframework/spring-core/maven-metadata.xml"))
+		server.expect(MockRestRequestMatchers
+				.requestTo("https://repo.example.com/maven2/org/springframework/spring-core/maven-metadata.xml"))
 				.andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
 				.andRespond(MockRestResponseCreators.withSuccess(
-						new FileSystemResource(new File(
-								"src/test/resources/spring-core-maven-metadata.xml")),
+						new FileSystemResource(new File("src/test/resources/spring-core-maven-metadata.xml")),
 						MediaType.TEXT_XML));
 		Set<DependencyVersion> versions = new MavenMetadataVersionResolver(rest,
-				Arrays.asList("https://repo.example.com/maven2/")).resolveVersions(
-						new Module("org.springframework", "spring-core"));
-		assertThat(versions.stream().map(DependencyVersion::toString)
-				.collect(Collectors.toList())).containsExactly("4.3.0.RELEASE",
-						"4.3.1.RELEASE", "4.3.2.RELEASE", "4.3.3.RELEASE",
-						"4.3.4.RELEASE", "4.3.5.RELEASE", "4.3.6.RELEASE",
-						"4.3.7.RELEASE", "4.3.8.RELEASE", "4.3.9.RELEASE",
-						"4.3.10.RELEASE", "4.3.11.RELEASE", "5.0.0.RELEASE");
+				Arrays.asList("https://repo.example.com/maven2/"))
+						.resolveVersions(new Module("org.springframework", "spring-core"));
+		assertThat(versions.stream().map(DependencyVersion::toString).collect(Collectors.toList())).containsExactly(
+				"4.3.0.RELEASE", "4.3.1.RELEASE", "4.3.2.RELEASE", "4.3.3.RELEASE", "4.3.4.RELEASE", "4.3.5.RELEASE",
+				"4.3.6.RELEASE", "4.3.7.RELEASE", "4.3.8.RELEASE", "4.3.9.RELEASE", "4.3.10.RELEASE", "4.3.11.RELEASE",
+				"5.0.0.RELEASE");
 	}
 
 	@Test
 	public void versionsFromMultipleRepositoriesAreCombined() {
 		RestTemplate rest = new RestTemplate();
 		MockRestServiceServer server = MockRestServiceServer.bindTo(rest).build();
-		server.expect(MockRestRequestMatchers.requestTo(
-				"https://repo1.example.com/com/example/core/maven-metadata.xml"))
+		server.expect(
+				MockRestRequestMatchers.requestTo("https://repo1.example.com/com/example/core/maven-metadata.xml"))
 				.andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
 				.andRespond(MockRestResponseCreators.withSuccess(
-						new FileSystemResource(
-								new File("src/test/resources/repo1-maven-metadata.xml")),
+						new FileSystemResource(new File("src/test/resources/repo1-maven-metadata.xml")),
 						MediaType.TEXT_XML));
-		server.expect(MockRestRequestMatchers.requestTo(
-				"https://repo2.example.com/com/example/core/maven-metadata.xml"))
+		server.expect(
+				MockRestRequestMatchers.requestTo("https://repo2.example.com/com/example/core/maven-metadata.xml"))
 				.andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
 				.andRespond(MockRestResponseCreators.withSuccess(
-						new FileSystemResource(
-								new File("src/test/resources/repo2-maven-metadata.xml")),
+						new FileSystemResource(new File("src/test/resources/repo2-maven-metadata.xml")),
 						MediaType.TEXT_XML));
 		Set<DependencyVersion> versions = new MavenMetadataVersionResolver(rest,
 				Arrays.asList("https://repo1.example.com", "https://repo2.example.com"))
 						.resolveVersions(new Module("com.example", "core"));
-		assertThat(versions.stream().map(DependencyVersion::toString)
-				.collect(Collectors.toList())).containsExactly("1.0.0.RELEASE",
-						"1.1.0.RELEASE");
+		assertThat(versions.stream().map(DependencyVersion::toString).collect(Collectors.toList()))
+				.containsExactly("1.0.0.RELEASE", "1.1.0.RELEASE");
 	}
 
 }

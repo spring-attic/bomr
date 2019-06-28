@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 the original author or authors.
+ * Copyright 2017-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,14 +60,12 @@ class VerifiableBom {
 			File effectiveBomFile = createEffectiveBomFile(mavenInvoker, bomFile);
 			Document effectiveBom = parseBom(effectiveBomFile);
 			XPath xpath = XPathFactory.newInstance().newXPath();
-			this.managedDependencies = asList(xpath,
-					"/project/dependencyManagement/dependencies/dependency", effectiveBom,
-					this::createManagedDependency);
+			this.managedDependencies = asList(xpath, "/project/dependencyManagement/dependencies/dependency",
+					effectiveBom, this::createManagedDependency);
 			this.groupId = xpath.evaluate("/project/groupId/text()", effectiveBom);
 			this.artifactId = xpath.evaluate("/project/artifactId/text()", effectiveBom);
 			this.version = xpath.evaluate("/project/version/text()", effectiveBom);
-			this.repositories = asList(xpath, "/project/repositories/repository",
-					effectiveBom, this::createRepository);
+			this.repositories = asList(xpath, "/project/repositories/repository", effectiveBom, this::createRepository);
 		}
 		catch (Exception ex) {
 			throw new RuntimeException(ex);
@@ -94,10 +92,9 @@ class VerifiableBom {
 		return this.version;
 	}
 
-	private <T> List<T> asList(XPath xpath, String expression, Document effectiveBom,
-			BiFunction<XPath, Node, T> mapper) throws Exception {
-		NodeList nodeList = (NodeList) xpath.evaluate(expression, effectiveBom,
-				XPathConstants.NODESET);
+	private <T> List<T> asList(XPath xpath, String expression, Document effectiveBom, BiFunction<XPath, Node, T> mapper)
+			throws Exception {
+		NodeList nodeList = (NodeList) xpath.evaluate(expression, effectiveBom, XPathConstants.NODESET);
 		return IntStream.range(0, nodeList.getLength()).mapToObj(nodeList::item)
 				.map((node) -> mapper.apply(xpath, node)).collect(Collectors.toList());
 	}
@@ -119,8 +116,7 @@ class VerifiableBom {
 		try {
 			String id = xpath.evaluate("id/text()", node);
 			String url = xpath.evaluate("url/text()", node);
-			boolean snapshotsEnabled = Boolean
-					.valueOf(xpath.evaluate("snapshots/enabled/text()", node));
+			boolean snapshotsEnabled = Boolean.valueOf(xpath.evaluate("snapshots/enabled/text()", node));
 			return new Repository(id, URI.create(url), snapshotsEnabled);
 		}
 		catch (XPathExpressionException ex) {
@@ -138,8 +134,7 @@ class VerifiableBom {
 			return effectiveBomFile;
 		}
 		catch (MavenInvocationFailedException ex) {
-			System.err.println("Failed to create effective bom from '"
-					+ bomFile.getAbsolutePath() + "':");
+			System.err.println("Failed to create effective bom from '" + bomFile.getAbsolutePath() + "':");
 			ex.getOutputLines().forEach(System.err::println);
 			System.exit(-1);
 			return null;

@@ -24,8 +24,7 @@ import org.apache.maven.artifact.versioning.ComparableVersion;
  *
  * @author Andy Wilkinson
  */
-public class UnstructuredDependencyVersion extends AbstractDependencyVersion
-		implements DependencyVersion {
+public class UnstructuredDependencyVersion extends AbstractDependencyVersion implements DependencyVersion {
 
 	private final String version;
 

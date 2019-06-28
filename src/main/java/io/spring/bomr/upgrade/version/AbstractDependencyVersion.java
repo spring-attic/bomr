@@ -34,8 +34,7 @@ abstract class AbstractDependencyVersion implements DependencyVersion {
 	@Override
 	public int compareTo(DependencyVersion other) {
 		ComparableVersion otherComparable = (other instanceof AbstractDependencyVersion)
-				? ((AbstractDependencyVersion) other).comparableVersion
-				: new ComparableVersion(other.toString());
+				? ((AbstractDependencyVersion) other).comparableVersion : new ComparableVersion(other.toString());
 		return this.comparableVersion.compareTo(otherComparable);
 	}
 

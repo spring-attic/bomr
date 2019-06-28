@@ -43,12 +43,11 @@ class Commands {
 	}
 
 	String describe() {
-		int maxLength = this.commands.keySet().stream().map(String::length)
-				.max((i1, i2) -> i1.compareTo(i2)).get();
+		int maxLength = this.commands.keySet().stream().map(String::length).max((i1, i2) -> i1.compareTo(i2)).get();
 		StringWriter description = new StringWriter();
 		PrintWriter printer = new PrintWriter(description);
-		this.commands.values().stream().sorted().forEach(
-				(command) -> printer.println(describeCommand(command, maxLength + 4)));
+		this.commands.values().stream().sorted()
+				.forEach((command) -> printer.println(describeCommand(command, maxLength + 4)));
 		return description.toString();
 	}
 

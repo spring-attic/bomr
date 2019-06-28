@@ -37,10 +37,8 @@ public class BomVersionsTests {
 	@Test
 	public void versionIsResolvedFromProperties() throws Exception {
 		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-				.parse(new InputSource(
-						new StringReader("<project><properties><foo>1.2.3</foo>"
-								+ "<bar.version>2.3.4</bar.version>"
-								+ "</properties></project>")));
+				.parse(new InputSource(new StringReader("<project><properties><foo>1.2.3</foo>"
+						+ "<bar.version>2.3.4</bar.version>" + "</properties></project>")));
 		BomVersions versions = new BomVersions(document);
 		BomVersion fooVersion = versions.resolve("${foo}");
 		assertThat(fooVersion.getProperty()).isEqualTo("foo");
@@ -53,10 +51,8 @@ public class BomVersionsTests {
 	@Test
 	public void unknownVersionResolvesToNull() throws Exception {
 		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-				.parse(new InputSource(
-						new StringReader("<project><properties><foo>1.2.3</foo>"
-								+ "<bar.version>2.3.4</bar.version>"
-								+ "</properties></project>")));
+				.parse(new InputSource(new StringReader("<project><properties><foo>1.2.3</foo>"
+						+ "<bar.version>2.3.4</bar.version>" + "</properties></project>")));
 		BomVersions versions = new BomVersions(document);
 		assertThat(versions.resolve("${baz.version}")).isNull();
 	}
@@ -64,10 +60,8 @@ public class BomVersionsTests {
 	@Test
 	public void indirectVersionsAreResolved() throws Exception {
 		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-				.parse(new InputSource(
-						new StringReader("<project><properties><foo>1.2.3</foo>"
-								+ "<bar.version>${foo}</bar.version>"
-								+ "</properties></project>")));
+				.parse(new InputSource(new StringReader("<project><properties><foo>1.2.3</foo>"
+						+ "<bar.version>${foo}</bar.version>" + "</properties></project>")));
 		BomVersions versions = new BomVersions(document);
 		BomVersion barVersion = versions.resolve("${bar.version}");
 		assertThat(barVersion.getProperty()).isEqualTo("foo");

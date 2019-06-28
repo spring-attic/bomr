@@ -45,24 +45,20 @@ public class ArtifactsFinderTests {
 
 	private final RestTemplate rest = new RestTemplate();
 
-	private final MockRestServiceServer server = MockRestServiceServer.bindTo(this.rest)
-			.ignoreExpectOrder(true).build();
+	private final MockRestServiceServer server = MockRestServiceServer.bindTo(this.rest).ignoreExpectOrder(true)
+			.build();
 
 	@Test
 	public void findReturnsNamesOfArtifactsWithMatchingVersionAndJarArtifact() {
-		configureExpectations(
-				new File("src/test/resources/artifacts/org/quartz-scheduler/"));
-		Set<String> artifacts = new ArtifactsFinder(this.rest).find(
-				URI.create("https://repo1.maven.org/maven2/"), "org.quartz-scheduler",
-				"2.3.0");
+		configureExpectations(new File("src/test/resources/artifacts/org/quartz-scheduler/"));
+		Set<String> artifacts = new ArtifactsFinder(this.rest).find(URI.create("https://repo1.maven.org/maven2/"),
+				"org.quartz-scheduler", "2.3.0");
 		assertThat(artifacts).containsExactly("quartz", "quartz-jobs");
 	}
 
 	private void configureExpectations(File root) {
-		configureExpectations(root,
-				"https://repo1.maven.org/maven2/org/quartz-scheduler/");
-		this.server.expect(requestTo(endsWith(".jar")))
-				.andRespond(withStatus(HttpStatus.NOT_FOUND));
+		configureExpectations(root, "https://repo1.maven.org/maven2/org/quartz-scheduler/");
+		this.server.expect(requestTo(endsWith(".jar"))).andRespond(withStatus(HttpStatus.NOT_FOUND));
 	}
 
 	private void configureExpectations(File source, String base) {
@@ -70,12 +66,11 @@ public class ArtifactsFinderTests {
 			if (candidate.isFile()) {
 				if ("index.html".equals(candidate.getName())) {
 					this.server.expect(requestTo(base)).andExpect(method(HttpMethod.GET))
-							.andRespond(withSuccess(new FileSystemResource(candidate),
-									MediaType.TEXT_HTML));
+							.andRespond(withSuccess(new FileSystemResource(candidate), MediaType.TEXT_HTML));
 				}
 				else if (candidate.getName().endsWith(".jar")) {
-					this.server.expect(requestTo(base + candidate.getName()))
-							.andExpect(method(HttpMethod.HEAD)).andRespond(withSuccess());
+					this.server.expect(requestTo(base + candidate.getName())).andExpect(method(HttpMethod.HEAD))
+							.andRespond(withSuccess());
 				}
 			}
 			else {

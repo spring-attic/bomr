@@ -35,29 +35,22 @@ import org.springframework.core.env.PropertiesPropertySource;
  *
  * @author Andy Wilkinson
  */
-final class UserHomeBomrPropertiesEnvironmentPostProcessor
-		implements EnvironmentPostProcessor {
+final class UserHomeBomrPropertiesEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
-	private Log logger = LogFactory
-			.getLog(UserHomeBomrPropertiesEnvironmentPostProcessor.class);
+	private Log logger = LogFactory.getLog(UserHomeBomrPropertiesEnvironmentPostProcessor.class);
 
 	@Override
-	public void postProcessEnvironment(ConfigurableEnvironment environment,
-			SpringApplication application) {
-		File bomrPropertiesFile = new File(System.getProperty("user.home"),
-				".bomr.properties");
+	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+		File bomrPropertiesFile = new File(System.getProperty("user.home"), ".bomr.properties");
 		if (bomrPropertiesFile.exists()) {
 			Properties bomrProperties = new Properties();
 			try (FileReader reader = new FileReader(bomrPropertiesFile)) {
 				bomrProperties.load(reader);
 			}
 			catch (IOException ex) {
-				this.logger.warn(
-						"Failed to load '" + bomrPropertiesFile.getAbsolutePath() + "'",
-						ex);
+				this.logger.warn("Failed to load '" + bomrPropertiesFile.getAbsolutePath() + "'", ex);
 			}
-			environment.getPropertySources()
-					.addLast(new PropertiesPropertySource("bomr", bomrProperties));
+			environment.getPropertySources().addLast(new PropertiesPropertySource("bomr", bomrProperties));
 		}
 	}
 

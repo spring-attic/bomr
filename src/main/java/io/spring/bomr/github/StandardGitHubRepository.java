@@ -61,8 +61,7 @@ final class StandardGitHubRepository implements GitHubRepository {
 	@Override
 	public List<Milestone> getMilestones() {
 		return get("milestones?per_page=100",
-				(milestone) -> new Milestone((String) milestone.get("title"),
-						(Integer) milestone.get("number")));
+				(milestone) -> new Milestone((String) milestone.get("title"), (Integer) milestone.get("number")));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

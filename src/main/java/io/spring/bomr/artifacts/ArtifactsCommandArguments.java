@@ -39,34 +39,28 @@ final class ArtifactsCommandArguments {
 
 	private final URI repository;
 
-	private ArtifactsCommandArguments(String group, String version,
-			String versionProperty, URI repository) {
+	private ArtifactsCommandArguments(String group, String version, String versionProperty, URI repository) {
 		this.group = group;
 		this.version = version;
 		this.versionProperty = versionProperty;
-		this.repository = (repository != null) ? repository
-				: URI.create("https://repo1.maven.org/maven2/");
+		this.repository = (repository != null) ? repository : URI.create("https://repo1.maven.org/maven2/");
 	}
 
 	static ArtifactsCommandArguments parse(String[] args) {
 		OptionParser optionParser = new OptionParser();
 		optionParser.formatHelpWith(new BuiltinHelpFormatter(120, 2));
 		ArgumentAcceptingOptionSpec<String> versionPropertySpec = optionParser
-				.accepts("version-property",
-						"Version property to use in generated dependency management")
+				.accepts("version-property", "Version property to use in generated dependency management")
 				.withRequiredArg().ofType(String.class);
 		ArgumentAcceptingOptionSpec<URI> repositoryPropertySpec = optionParser
-				.accepts("repository", "Repository to query").withRequiredArg()
-				.ofType(URI.class);
+				.accepts("repository", "Repository to query").withRequiredArg().ofType(URI.class);
 		try {
 			OptionSet parsed = optionParser.parse(args);
 			if (parsed.nonOptionArguments().size() != 2) {
 				showUsageAndExit(optionParser);
 			}
-			return new ArtifactsCommandArguments(
-					(String) parsed.nonOptionArguments().get(0),
-					(String) parsed.nonOptionArguments().get(1),
-					parsed.valueOf(versionPropertySpec),
+			return new ArtifactsCommandArguments((String) parsed.nonOptionArguments().get(0),
+					(String) parsed.nonOptionArguments().get(1), parsed.valueOf(versionPropertySpec),
 					parsed.valueOf(repositoryPropertySpec));
 		}
 		catch (Exception ex) {

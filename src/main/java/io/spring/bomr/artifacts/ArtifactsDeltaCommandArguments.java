@@ -41,37 +41,31 @@ final class ArtifactsDeltaCommandArguments {
 
 	private final URI repository;
 
-	private ArtifactsDeltaCommandArguments(String group, String oldVersion,
-			String newVersion, String versionProperty, URI repository) {
+	private ArtifactsDeltaCommandArguments(String group, String oldVersion, String newVersion, String versionProperty,
+			URI repository) {
 		this.group = group;
 		this.oldVersion = oldVersion;
 		this.newVersion = newVersion;
 		this.versionProperty = versionProperty;
-		this.repository = (repository != null) ? repository
-				: URI.create("https://repo1.maven.org/maven2/");
+		this.repository = (repository != null) ? repository : URI.create("https://repo1.maven.org/maven2/");
 	}
 
 	static ArtifactsDeltaCommandArguments parse(String[] args) {
 		OptionParser optionParser = new OptionParser();
 		optionParser.formatHelpWith(new BuiltinHelpFormatter(120, 2));
 		ArgumentAcceptingOptionSpec<String> versionPropertySpec = optionParser
-				.accepts("version-property",
-						"Version property to use in generated dependency management")
+				.accepts("version-property", "Version property to use in generated dependency management")
 				.withRequiredArg().ofType(String.class);
 		ArgumentAcceptingOptionSpec<URI> repositoryPropertySpec = optionParser
-				.accepts("repository", "Repository to query").withRequiredArg()
-				.ofType(URI.class);
+				.accepts("repository", "Repository to query").withRequiredArg().ofType(URI.class);
 		try {
 			OptionSet parsed = optionParser.parse(args);
 			if (parsed.nonOptionArguments().size() != 3) {
 				showUsageAndExit(optionParser);
 			}
-			return new ArtifactsDeltaCommandArguments(
-					(String) parsed.nonOptionArguments().get(0),
-					(String) parsed.nonOptionArguments().get(1),
-					(String) parsed.nonOptionArguments().get(2),
-					parsed.valueOf(versionPropertySpec),
-					parsed.valueOf(repositoryPropertySpec));
+			return new ArtifactsDeltaCommandArguments((String) parsed.nonOptionArguments().get(0),
+					(String) parsed.nonOptionArguments().get(1), (String) parsed.nonOptionArguments().get(2),
+					parsed.valueOf(versionPropertySpec), parsed.valueOf(repositoryPropertySpec));
 		}
 		catch (Exception ex) {
 			showUsageAndExit(optionParser);
@@ -80,8 +74,7 @@ final class ArtifactsDeltaCommandArguments {
 	}
 
 	private static void showUsageAndExit(OptionParser optionParser) {
-		System.err.println(
-				"Usage: bomr artifacts-delta <group> <old-version> <new-version> [<options>]");
+		System.err.println("Usage: bomr artifacts-delta <group> <old-version> <new-version> [<options>]");
 		System.err.println();
 		try {
 			optionParser.printHelpOn(System.err);

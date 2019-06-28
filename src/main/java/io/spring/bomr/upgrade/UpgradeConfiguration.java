@@ -34,8 +34,8 @@ import org.springframework.context.annotation.Configuration;
 class UpgradeConfiguration {
 
 	@Bean
-	public UpgradeCommand upgradeCommand(GitHub gitHub,
-			UpgradeProperties upgradeProperties, BomrProperties bomrProperties) {
+	public UpgradeCommand upgradeCommand(GitHub gitHub, UpgradeProperties upgradeProperties,
+			BomrProperties bomrProperties) {
 		return new UpgradeCommand(gitHub, upgradeProperties, bomrProperties.getBom());
 	}
 

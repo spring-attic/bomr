@@ -40,8 +40,8 @@ final class UpgradeCommandArguments {
 		OptionParser optionParser = new OptionParser();
 		optionParser.formatHelpWith(new BuiltinHelpFormatter(120, 2));
 		ArgumentAcceptingOptionSpec<String> milestoneSpec = optionParser
-				.accepts("milestone", "Milestone to which upgrade issues are assigned")
-				.withRequiredArg().ofType(String.class);
+				.accepts("milestone", "Milestone to which upgrade issues are assigned").withRequiredArg()
+				.ofType(String.class);
 		try {
 			OptionSet parsed = optionParser.parse(args);
 			if (parsed.nonOptionArguments().size() != 0) {

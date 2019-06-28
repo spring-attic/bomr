@@ -47,31 +47,27 @@ final class InteractiveUpgradeResolver implements UpgradeResolver {
 
 	private final Map<String, ProhibitedVersions> prohibitedVersions;
 
-	InteractiveUpgradeResolver(VersionResolver versionResolver,
-			UpgradePolicy upgradePolicy, List<ProhibitedVersions> prohibitedVersions) {
+	InteractiveUpgradeResolver(VersionResolver versionResolver, UpgradePolicy upgradePolicy,
+			List<ProhibitedVersions> prohibitedVersions) {
 		this.versionResolver = versionResolver;
 		this.upgradePolicy = upgradePolicy;
-		this.prohibitedVersions = prohibitedVersions.stream().collect(
-				Collectors.toMap(ProhibitedVersions::getProject, Function.identity()));
+		this.prohibitedVersions = prohibitedVersions.stream()
+				.collect(Collectors.toMap(ProhibitedVersions::getProject, Function.identity()));
 	}
 
 	@Override
 	public List<Upgrade> resolveUpgrades(Collection<Project> projects) {
-		return projects.stream().map(this::resolveUpgrade)
-				.filter((upgrade) -> upgrade != null).collect(Collectors.toList());
+		return projects.stream().map(this::resolveUpgrade).filter((upgrade) -> upgrade != null)
+				.collect(Collectors.toList());
 	}
 
 	private Upgrade resolveUpgrade(Project project) {
 		Map<String, SortedSet<DependencyVersion>> moduleVersions = new LinkedHashMap<>();
-		ProhibitedVersions prohibitedVersions = this.prohibitedVersions
-				.get(project.getName().getRawName());
-		project.getModules()
-				.forEach((module) -> moduleVersions.put(module.getArtifactId(),
-						getLaterVersionsForModule(module, project.getVersion())));
-		List<DependencyVersion> allVersions = moduleVersions.values().stream()
-				.flatMap(SortedSet::stream).distinct()
-				.filter((dependencyVersion) -> isPermitted(dependencyVersion,
-						prohibitedVersions))
+		ProhibitedVersions prohibitedVersions = this.prohibitedVersions.get(project.getName().getRawName());
+		project.getModules().forEach((module) -> moduleVersions.put(module.getArtifactId(),
+				getLaterVersionsForModule(module, project.getVersion())));
+		List<DependencyVersion> allVersions = moduleVersions.values().stream().flatMap(SortedSet::stream).distinct()
+				.filter((dependencyVersion) -> isPermitted(dependencyVersion, prohibitedVersions))
 				.collect(Collectors.toList());
 		if (allVersions.isEmpty()) {
 			return null;
@@ -84,8 +80,7 @@ final class InteractiveUpgradeResolver implements UpgradeResolver {
 			System.out.print("    " + (index + 1) + ". " + version);
 			if (!missingModules.isEmpty()) {
 				System.out.print(" (Some modules are missing: "
-						+ StringUtils.collectionToDelimitedString(missingModules, ", ")
-						+ ")");
+						+ StringUtils.collectionToDelimitedString(missingModules, ", ") + ")");
 			}
 			System.out.println();
 		});
@@ -98,22 +93,19 @@ final class InteractiveUpgradeResolver implements UpgradeResolver {
 		return new Upgrade(project, allVersions.get(selection - 1));
 	}
 
-	private boolean isPermitted(DependencyVersion dependencyVersion,
-			ProhibitedVersions prohibitedVersions) {
+	private boolean isPermitted(DependencyVersion dependencyVersion, ProhibitedVersions prohibitedVersions) {
 		if (prohibitedVersions == null) {
 			return true;
 		}
 		for (VersionRange range : prohibitedVersions.getVersions()) {
-			if (range.containsVersion(
-					new DefaultArtifactVersion(dependencyVersion.toString()))) {
+			if (range.containsVersion(new DefaultArtifactVersion(dependencyVersion.toString()))) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	private List<String> getMissingModules(
-			Map<String, SortedSet<DependencyVersion>> moduleVersions,
+	private List<String> getMissingModules(Map<String, SortedSet<DependencyVersion>> moduleVersions,
 			DependencyVersion version) {
 		List<String> missingModules = new ArrayList<>();
 		moduleVersions.forEach((name, versions) -> {
@@ -124,17 +116,13 @@ final class InteractiveUpgradeResolver implements UpgradeResolver {
 		return missingModules;
 	}
 
-	private SortedSet<DependencyVersion> getLaterVersionsForModule(Module module,
-			BomVersion currentVersion) {
-		SortedSet<DependencyVersion> versions = this.versionResolver
-				.resolveVersions(module);
-		versions.removeIf((candidate) -> !this.upgradePolicy.test(candidate,
-				currentVersion.getVersion()));
+	private SortedSet<DependencyVersion> getLaterVersionsForModule(Module module, BomVersion currentVersion) {
+		SortedSet<DependencyVersion> versions = this.versionResolver.resolveVersions(module);
+		versions.removeIf((candidate) -> !this.upgradePolicy.test(candidate, currentVersion.getVersion()));
 		return versions;
 	}
 
-	private <T> void forEachWithIndex(Collection<T> collection,
-			BiConsumer<Integer, T> consumer) {
+	private <T> void forEachWithIndex(Collection<T> collection, BiConsumer<Integer, T> consumer) {
 		int i = 0;
 		for (T item : collection) {
 			consumer.accept(i++, item);

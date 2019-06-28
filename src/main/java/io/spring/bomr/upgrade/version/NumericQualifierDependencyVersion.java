@@ -29,8 +29,7 @@ final class NumericQualifierDependencyVersion extends ArtifactVersionDependencyV
 
 	private final String original;
 
-	private NumericQualifierDependencyVersion(ArtifactVersion artifactVersion,
-			String original) {
+	private NumericQualifierDependencyVersion(ArtifactVersion artifactVersion, String original) {
 		super(artifactVersion);
 		this.original = original;
 	}
@@ -45,8 +44,7 @@ final class NumericQualifierDependencyVersion extends ArtifactVersionDependencyV
 		if (components.length == 4) {
 			ArtifactVersion artifactVersion = new DefaultArtifactVersion(
 					components[0] + "." + components[1] + "." + components[2]);
-			if (artifactVersion.getQualifier() != null
-					&& artifactVersion.getQualifier().equals(input)) {
+			if (artifactVersion.getQualifier() != null && artifactVersion.getQualifier().equals(input)) {
 				return null;
 			}
 			return new NumericQualifierDependencyVersion(artifactVersion, input);

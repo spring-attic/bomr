@@ -31,8 +31,7 @@ class GitHubConfiguration {
 
 	@Bean
 	public GitHub gitHub(GitHubProperties gitHubProperties) {
-		return new StandardGitHub(gitHubProperties.getUsername(),
-				gitHubProperties.getPassword());
+		return new StandardGitHub(gitHubProperties.getUsername(), gitHubProperties.getPassword());
 	}
 
 }

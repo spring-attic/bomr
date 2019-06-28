@@ -64,35 +64,32 @@ final class MavenMetadataVersionResolver implements VersionResolver {
 		for (String repositoryUrl : this.repositoryUrls) {
 			versions.addAll(resolveVersions(module, repositoryUrl));
 		}
-		return new TreeSet<>(versions.stream().map(DependencyVersion::parse)
-				.collect(Collectors.toSet()));
+		return new TreeSet<>(versions.stream().map(DependencyVersion::parse).collect(Collectors.toSet()));
 	}
 
 	private Set<String> resolveVersions(Module module, String repositoryUrl) {
 		Set<String> versions = new HashSet<String>();
-		String url = repositoryUrl + "/" + module.getGroupId().replace('.', '/') + "/"
-				+ module.getArtifactId() + "/maven-metadata.xml";
+		String url = repositoryUrl + "/" + module.getGroupId().replace('.', '/') + "/" + module.getArtifactId()
+				+ "/maven-metadata.xml";
 		try {
 			String metadata = this.rest.getForObject(url, String.class);
-			Document metadataDocument = DocumentBuilderFactory.newInstance()
-					.newDocumentBuilder()
+			Document metadataDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 					.parse(new InputSource(new StringReader(metadata)));
 			NodeList versionNodes = (NodeList) XPathFactory.newInstance().newXPath()
-					.evaluate("/metadata/versioning/versions/version", metadataDocument,
-							XPathConstants.NODESET);
+					.evaluate("/metadata/versioning/versions/version", metadataDocument, XPathConstants.NODESET);
 			for (int i = 0; i < versionNodes.getLength(); i++) {
 				versions.add(versionNodes.item(i).getTextContent());
 			}
 		}
 		catch (HttpClientErrorException ex) {
 			if (ex.getStatusCode() != HttpStatus.NOT_FOUND) {
-				System.err.println("Failed to download maven-metadata.xml for " + module
-						+ " from " + url + ": " + ex.getMessage());
+				System.err.println("Failed to download maven-metadata.xml for " + module + " from " + url + ": "
+						+ ex.getMessage());
 			}
 		}
 		catch (Exception ex) {
-			System.err.println("Failed to resolve versions for module " + module
-					+ " in repository " + repositoryUrl + ": " + ex.getMessage());
+			System.err.println("Failed to resolve versions for module " + module + " in repository " + repositoryUrl
+					+ ": " + ex.getMessage());
 		}
 		return versions;
 	}

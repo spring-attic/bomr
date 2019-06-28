@@ -29,32 +29,27 @@ public class DependencyVersionTests {
 
 	@Test
 	public void parseWhenValidMavenVersionShouldReturnArtifactVersionDependencyVersion() {
-		assertThat(DependencyVersion.parse("1.2.3.Final"))
-				.isInstanceOf(ArtifactVersionDependencyVersion.class);
+		assertThat(DependencyVersion.parse("1.2.3.Final")).isInstanceOf(ArtifactVersionDependencyVersion.class);
 	}
 
 	@Test
 	public void parseWhenReleaseTrainShouldReturnReleaseTrainDependencyVersion() {
-		assertThat(DependencyVersion.parse("Ingalls-SR5"))
-				.isInstanceOf(ReleaseTrainDependencyVersion.class);
+		assertThat(DependencyVersion.parse("Ingalls-SR5")).isInstanceOf(ReleaseTrainDependencyVersion.class);
 	}
 
 	@Test
 	public void parseWhenMavenLikeVersionWithNumericQualifieShouldReturnNumericQualifierDependencyVersion() {
-		assertThat(DependencyVersion.parse("1.2.3.4"))
-				.isInstanceOf(NumericQualifierDependencyVersion.class);
+		assertThat(DependencyVersion.parse("1.2.3.4")).isInstanceOf(NumericQualifierDependencyVersion.class);
 	}
 
 	@Test
 	public void parseWhenVersionWithLeadingZeroesShouldReturnLeadingZeroesDependencyVersion() {
-		assertThat(DependencyVersion.parse("1.4.01"))
-				.isInstanceOf(LeadingZeroesDependencyVersion.class);
+		assertThat(DependencyVersion.parse("1.4.01")).isInstanceOf(LeadingZeroesDependencyVersion.class);
 	}
 
 	@Test
 	public void parseWhenVersionWithCombinedPatchAndQualifierShouldReturnCombinedPatchAndQualifierDependencyVersion() {
-		assertThat(DependencyVersion.parse("4.0.0M4"))
-				.isInstanceOf(CombinedPatchAndQualifierDependencyVersion.class);
+		assertThat(DependencyVersion.parse("4.0.0M4")).isInstanceOf(CombinedPatchAndQualifierDependencyVersion.class);
 	}
 
 }

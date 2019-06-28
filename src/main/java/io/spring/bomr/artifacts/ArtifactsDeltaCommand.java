@@ -46,18 +46,16 @@ public class ArtifactsDeltaCommand implements Command {
 
 	@Override
 	public String getDescription() {
-		return "Lists the artifacts that have been added and removed from a "
-				+ "group across two versions";
+		return "Lists the artifacts that have been added and removed from a " + "group across two versions";
 	}
 
 	@Override
 	public void invoke(String[] args) {
-		ArtifactsDeltaCommandArguments arguments = ArtifactsDeltaCommandArguments
-				.parse(args);
-		Set<String> oldArtifacts = this.artifactsFinder.find(arguments.getRepository(),
-				arguments.getGroup(), arguments.getOldVersion());
-		Set<String> newArtifacts = this.artifactsFinder.find(arguments.getRepository(),
-				arguments.getGroup(), arguments.getNewVersion());
+		ArtifactsDeltaCommandArguments arguments = ArtifactsDeltaCommandArguments.parse(args);
+		Set<String> oldArtifacts = this.artifactsFinder.find(arguments.getRepository(), arguments.getGroup(),
+				arguments.getOldVersion());
+		Set<String> newArtifacts = this.artifactsFinder.find(arguments.getRepository(), arguments.getGroup(),
+				arguments.getNewVersion());
 		Set<String> removedArtifacts = difference(oldArtifacts, newArtifacts);
 		System.out.println("Removed:");
 		System.out.println();
@@ -76,8 +74,7 @@ public class ArtifactsDeltaCommand implements Command {
 				System.out.println("<dependency>");
 				System.out.println("\t<groupId>" + arguments.getGroup() + "</groupId>");
 				System.out.println("\t<artifactId>" + artifact + "</artifactId>");
-				System.out.println(
-						"\t<version>" + determineVersion(arguments) + "</version>");
+				System.out.println("\t<version>" + determineVersion(arguments) + "</version>");
 				System.out.println("</dependency>");
 			});
 		}

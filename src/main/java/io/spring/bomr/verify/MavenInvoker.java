@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 the original author or authors.
+ * Copyright 2017-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,8 +44,7 @@ class MavenInvoker {
 		this.mavenHome = mavenHome;
 	}
 
-	void invoke(File pom, Properties properties, String... goals)
-			throws MavenInvocationFailedException {
+	void invoke(File pom, Properties properties, String... goals) throws MavenInvocationFailedException {
 		DefaultInvocationRequest invocation = new DefaultInvocationRequest();
 		invocation.setPomFile(pom);
 		invocation.setGoals(Arrays.asList(goals));
@@ -54,8 +53,8 @@ class MavenInvoker {
 		CapturingInvocationOutputHandler outputHandler = new CapturingInvocationOutputHandler();
 		invocation.setOutputHandler(outputHandler);
 		DefaultInvoker invoker = new DefaultInvoker();
-		invoker.setLogger(new PrintStreamLogger(
-				new PrintStream(new ByteArrayOutputStream(), true), InvokerLogger.FATAL));
+		invoker.setLogger(
+				new PrintStreamLogger(new PrintStream(new ByteArrayOutputStream(), true), InvokerLogger.FATAL));
 		invoker.setMavenHome(this.mavenHome);
 		InvocationResult result;
 		try {
@@ -86,8 +85,7 @@ class MavenInvoker {
 
 	}
 
-	private final class CapturingInvocationOutputHandler
-			implements InvocationOutputHandler {
+	private final class CapturingInvocationOutputHandler implements InvocationOutputHandler {
 
 		private final List<String> lines = new ArrayList<>();
 

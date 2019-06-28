@@ -59,46 +59,37 @@ public class ReleaseTrainDependencyVersionTests {
 
 	@Test
 	public void isSameMajorAndNewerWhenWhenReleaseTrainIsNewerShouldReturnTrue() {
-		assertThat(
-				version("Lovelace-RELEASE").isSameMajorAndNewerThan(version("Kay-SR5")))
-						.isTrue();
+		assertThat(version("Lovelace-RELEASE").isSameMajorAndNewerThan(version("Kay-SR5"))).isTrue();
 	}
 
 	@Test
 	public void isSameMajorAndNewerThanWhenReleaseTrainIsOlderShouldReturnFalse() {
-		assertThat(version("Ingalls-RELEASE").isSameMajorAndNewerThan(version("Kay-SR5")))
-				.isFalse();
+		assertThat(version("Ingalls-RELEASE").isSameMajorAndNewerThan(version("Kay-SR5"))).isFalse();
 	}
 
 	@Test
 	public void isSameMajorAndNewerThanWhenVersionIsNewerShouldReturnTrue() {
-		assertThat(version("Kay-SR6").isSameMajorAndNewerThan(version("Kay-SR5")))
-				.isTrue();
+		assertThat(version("Kay-SR6").isSameMajorAndNewerThan(version("Kay-SR5"))).isTrue();
 	}
 
 	@Test
 	public void isSameMinorAndNewerThanWhenReleaseTrainIsNewerShouldReturnFalse() {
-		assertThat(
-				version("Lovelace-RELEASE").isSameMinorAndNewerThan(version("Kay-SR5")))
-						.isFalse();
+		assertThat(version("Lovelace-RELEASE").isSameMinorAndNewerThan(version("Kay-SR5"))).isFalse();
 	}
 
 	@Test
 	public void isSameMinorAndNewerThanWhenReleaseTrainIsTheSameAndVersionIsNewerShouldReturnTrue() {
-		assertThat(version("Kay-SR6").isSameMinorAndNewerThan(version("Kay-SR5")))
-				.isTrue();
+		assertThat(version("Kay-SR6").isSameMinorAndNewerThan(version("Kay-SR5"))).isTrue();
 	}
 
 	@Test
 	public void isSameMinorAndNewerThanWhenReleaseTrainAndVersionAreTheSameShouldReturnFalse() {
-		assertThat(version("Kay-SR6").isSameMinorAndNewerThan(version("Kay-SR6")))
-				.isFalse();
+		assertThat(version("Kay-SR6").isSameMinorAndNewerThan(version("Kay-SR6"))).isFalse();
 	}
 
 	@Test
 	public void isSameMinorAndNewerThanWhenReleaseTrainIsTheSameAndVersionIsOlderShouldReturnFalse() {
-		assertThat(version("Kay-SR6").isSameMinorAndNewerThan(version("Kay-SR7")))
-				.isFalse();
+		assertThat(version("Kay-SR6").isSameMinorAndNewerThan(version("Kay-SR7"))).isFalse();
 	}
 
 	private static ReleaseTrainDependencyVersion version(String input) {

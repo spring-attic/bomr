@@ -29,13 +29,11 @@ import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
  */
 public class LeadingZeroesDependencyVersion extends ArtifactVersionDependencyVersion {
 
-	private static final Pattern PATTERN = Pattern
-			.compile("0*([0-9]+)\\.0*([0-9]+)\\.0*([0-9]+)");
+	private static final Pattern PATTERN = Pattern.compile("0*([0-9]+)\\.0*([0-9]+)\\.0*([0-9]+)");
 
 	private final String original;
 
-	public LeadingZeroesDependencyVersion(ArtifactVersion artifactVersion,
-			String original) {
+	public LeadingZeroesDependencyVersion(ArtifactVersion artifactVersion, String original) {
 		super(artifactVersion);
 		this.original = original;
 	}

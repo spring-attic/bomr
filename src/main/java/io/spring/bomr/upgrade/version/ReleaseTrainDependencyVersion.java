@@ -28,8 +28,7 @@ import org.springframework.util.StringUtils;
  */
 final class ReleaseTrainDependencyVersion implements DependencyVersion {
 
-	private static final Pattern VERSION_PATTERN = Pattern
-			.compile("([A-Z][a-z]+)-([A-Z]+)([0-9]*)");
+	private static final Pattern VERSION_PATTERN = Pattern.compile("([A-Z][a-z]+)-([A-Z]+)([0-9]*)");
 
 	private final String releaseTrain;
 
@@ -39,8 +38,7 @@ final class ReleaseTrainDependencyVersion implements DependencyVersion {
 
 	private final String original;
 
-	private ReleaseTrainDependencyVersion(String releaseTrain, String type, int version,
-			String original) {
+	private ReleaseTrainDependencyVersion(String releaseTrain, String type, int version, String original) {
 		this.releaseTrain = releaseTrain;
 		this.type = type;
 		this.version = version;
@@ -84,8 +82,7 @@ final class ReleaseTrainDependencyVersion implements DependencyVersion {
 			return true;
 		}
 		ReleaseTrainDependencyVersion otherReleaseTrain = (ReleaseTrainDependencyVersion) other;
-		return otherReleaseTrain.releaseTrain.equals(this.releaseTrain)
-				&& isNewerThan(other);
+		return otherReleaseTrain.releaseTrain.equals(this.releaseTrain) && isNewerThan(other);
 	}
 
 	@Override
@@ -122,9 +119,7 @@ final class ReleaseTrainDependencyVersion implements DependencyVersion {
 			return null;
 		}
 		return new ReleaseTrainDependencyVersion(matcher.group(1), matcher.group(2),
-				(StringUtils.hasLength(matcher.group(3)))
-						? Integer.parseInt(matcher.group(3)) : 0,
-				input);
+				(StringUtils.hasLength(matcher.group(3))) ? Integer.parseInt(matcher.group(3)) : 0, input);
 	}
 
 }

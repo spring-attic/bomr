@@ -34,11 +34,9 @@ import org.springframework.context.annotation.Configuration;
 class VerificationConfiguration {
 
 	@Bean
-	public VerifyCommand verifyCommand(BomrProperties bomr, MavenProperties maven,
-			VerifyProperties verify, Compiler compiler, TemplateLoader templateLoader) {
-		return new VerifyCommand(
-				new BomVerifier(new MavenInvoker(maven.getHome()), compiler,
-						templateLoader),
+	public VerifyCommand verifyCommand(BomrProperties bomr, MavenProperties maven, VerifyProperties verify,
+			Compiler compiler, TemplateLoader templateLoader) {
+		return new VerifyCommand(new BomVerifier(new MavenInvoker(maven.getHome()), compiler, templateLoader),
 				bomr.getBom(), verify.getIgnoredDependencies(), verify.getRepositories());
 	}
 

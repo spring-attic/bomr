@@ -52,10 +52,8 @@ public class CommandsTests {
 		Command charlie = mockCommand("charlie", "Description of charlie");
 		Commands commands = new Commands(Arrays.asList(charlie, bravo, alpha));
 		String description = commands.describe();
-		assertThat(description)
-				.isEqualTo(String.format("  alpha      Description of alpha%n"
-						+ "  bravo      Description of bravo%n"
-						+ "  charlie    Description of charlie%n"));
+		assertThat(description).isEqualTo(String.format("  alpha      Description of alpha%n"
+				+ "  bravo      Description of bravo%n" + "  charlie    Description of charlie%n"));
 	}
 
 	private Command mockCommand(String name) {

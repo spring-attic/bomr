@@ -40,44 +40,37 @@ final class BomUpgrader {
 
 	private final List<ProhibitedVersions> prohibitedVersions;
 
-	BomUpgrader(GitHub gitHub, VersionResolver versionResolver,
-			UpgradePolicy upgradePolicy, List<ProhibitedVersions> prohibitedVersions) {
+	BomUpgrader(GitHub gitHub, VersionResolver versionResolver, UpgradePolicy upgradePolicy,
+			List<ProhibitedVersions> prohibitedVersions) {
 		this.gitHub = gitHub;
 		this.versionResolver = versionResolver;
 		this.upgradePolicy = upgradePolicy;
 		this.prohibitedVersions = prohibitedVersions;
 	}
 
-	void upgrade(File bomFile, String organization, String repositoryName,
-			List<String> labels, String milestoneName) {
-		GitHubRepository repository = this.gitHub.getRepository(organization,
-				repositoryName);
+	void upgrade(File bomFile, String organization, String repositoryName, List<String> labels, String milestoneName) {
+		GitHubRepository repository = this.gitHub.getRepository(organization, repositoryName);
 		List<String> availableLabels = repository.getLabels();
 		if (!availableLabels.containsAll(labels)) {
 			List<String> unknownLabels = new ArrayList<>(labels);
 			unknownLabels.removeAll(availableLabels);
-			unknownLabels.forEach(
-					(label) -> System.err.println("Unknown label '" + label + "'"));
+			unknownLabels.forEach((label) -> System.err.println("Unknown label '" + label + "'"));
 			System.exit(1);
 		}
 		Milestone milestone = determineMilestone(repository, milestoneName);
 		Bom bom = new Bom(bomFile);
-		List<Upgrade> upgrades = new InteractiveUpgradeResolver(this.versionResolver,
-				this.upgradePolicy, this.prohibitedVersions)
-						.resolveUpgrades(bom.getManagedProjects().values());
-		upgrades.forEach(
-				(upgrade) -> applyUpgrade(upgrade, bom, repository, labels, milestone));
+		List<Upgrade> upgrades = new InteractiveUpgradeResolver(this.versionResolver, this.upgradePolicy,
+				this.prohibitedVersions).resolveUpgrades(bom.getManagedProjects().values());
+		upgrades.forEach((upgrade) -> applyUpgrade(upgrade, bom, repository, labels, milestone));
 	}
 
-	private Milestone determineMilestone(GitHubRepository repository,
-			String milestoneName) {
+	private Milestone determineMilestone(GitHubRepository repository, String milestoneName) {
 		if (milestoneName == null) {
 			return null;
 		}
 		List<Milestone> milestones = repository.getMilestones();
 		Optional<Milestone> matchingMilestone = milestones.stream()
-				.filter((milestone) -> milestone.getName().equals(milestoneName))
-				.findFirst();
+				.filter((milestone) -> milestone.getName().equals(milestoneName)).findFirst();
 		if (!matchingMilestone.isPresent()) {
 			System.err.println("Unknown milestone '" + milestoneName + "'");
 			System.exit(1);
@@ -85,10 +78,9 @@ final class BomUpgrader {
 		return matchingMilestone.get();
 	}
 
-	private void applyUpgrade(Upgrade upgrade, Bom bom, GitHubRepository repository,
-			List<String> labels, Milestone milestone) {
-		String description = "Upgrade to " + upgrade.getProject().getName() + " "
-				+ upgrade.getVersion();
+	private void applyUpgrade(Upgrade upgrade, Bom bom, GitHubRepository repository, List<String> labels,
+			Milestone milestone) {
+		String description = "Upgrade to " + upgrade.getProject().getName() + " " + upgrade.getVersion();
 		int issueNumber = repository.openIssue(description, labels, milestone);
 		bom.applyUpgrade(upgrade);
 		bom.commit(description + "\n\nCloses gh-" + issueNumber);

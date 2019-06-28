@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 the original author or authors.
+ * Copyright 2017-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,12 +46,11 @@ final class VerifyCommandArguments {
 		OptionParser optionParser = new OptionParser();
 		optionParser.formatHelpWith(new BuiltinHelpFormatter(120, 2));
 		ArgumentAcceptingOptionSpec<String> ignoreSpec = optionParser
-				.accepts("ignore", "groupId:artifactId of a managed dependency to ignore")
-				.withRequiredArg().ofType(String.class);
+				.accepts("ignore", "groupId:artifactId of a managed dependency to ignore").withRequiredArg()
+				.ofType(String.class);
 		ArgumentAcceptingOptionSpec<URI> repositorySpec = optionParser
-				.accepts("repository",
-						"Additional repository to use for dependency resolution")
-				.withRequiredArg().ofType(URI.class);
+				.accepts("repository", "Additional repository to use for dependency resolution").withRequiredArg()
+				.ofType(URI.class);
 		try {
 			OptionSet parsed = optionParser.parse(args);
 			if (parsed.nonOptionArguments().size() != 0) {
