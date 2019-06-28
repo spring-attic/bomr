@@ -71,6 +71,7 @@ class MavenInvoker {
 	/**
 	 * Exception thrown when an invocation of Maven fails.
 	 */
+	@SuppressWarnings("serial")
 	static final class MavenInvocationFailedException extends Exception {
 
 		private final List<String> outputLines;
