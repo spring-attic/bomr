@@ -1,0 +1,139 @@
+{
+    "response": {
+        "docs": [
+            {
+                "a": "infinispan-server-core",
+                "ec": [
+                    "-sources.jar",
+                    "-test-sources.jar",
+                    "-tests.jar",
+                    ".jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-server-core:9.4.15.Final",
+                "p": "bundle",
+                "tags": [
+                    "infinispan",
+                    "server",
+                    "core",
+                    "components"
+                ],
+                "timestamp": 1560795545000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-spring5-common",
+                "ec": [
+                    "-sources.jar",
+                    "-test-sources.jar",
+                    ".jar",
+                    "-tests.jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-spring5-common:9.4.15.Final",
+                "p": "jar",
+                "tags": [
+                    "distributed",
+                    "used",
+                    "same",
+                    "springframework",
+                    "namespace",
+                    "accesses",
+                    "over",
+                    "primary",
+                    "features",
+                    "facilitating",
+                    "factorybeans",
+                    "central",
+                    "support",
+                    "defined",
+                    "offers",
+                    "definitions",
+                    "project",
+                    "powered",
+                    "infinispan",
+                    "abstraction",
+                    "backed",
+                    "components",
+                    "outside",
+                    "creation",
+                    "remotecachemanager",
+                    "cachemanager",
+                    "remotely",
+                    "from",
+                    "running",
+                    "spring",
+                    "embeddedcachemanager",
+                    "network",
+                    "shortcut",
+                    "allowing",
+                    "integration",
+                    "performance",
+                    "above",
+                    "various",
+                    "colocated",
+                    "jndi",
+                    "retrieved",
+                    "caching",
+                    "classes",
+                    "application",
+                    "cache",
+                    "needs",
+                    "your",
+                    "provides",
+                    "addition",
+                    "access",
+                    "cachecontainer",
+                    "reference",
+                    "implementation",
+                    "context",
+                    "core",
+                    "within",
+                    "high"
+                ],
+                "timestamp": 1560795538000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-cdi-remote",
+                "ec": [
+                    "-sources.jar",
+                    "-test-sources.jar",
+                    "-tests.jar",
+                    ".jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-cdi-remote:9.4.15.Final",
+                "p": "bundle",
+                "tags": [
+                    "module",
+                    "infinispan",
+                    "common",
+                    "parent"
+                ],
+                "timestamp": 1560795535000,
+                "v": "9.4.15.Final"
+            }
+        ],
+        "numFound": 103,
+        "start": 100
+    },
+    "responseHeader": {
+        "QTime": 0,
+        "params": {
+            "core": "",
+            "fl": "id,g,a,v,p,ec,timestamp,tags",
+            "indent": "off",
+            "q": "g:org.infinispan AND v:9.4.15.Final",
+            "rows": "20",
+            "sort": "score desc,timestamp desc,g asc,a asc,v desc",
+            "start": "100",
+            "version": "2.2",
+            "wt": "json"
+        },
+        "status": 0
+    }
+}

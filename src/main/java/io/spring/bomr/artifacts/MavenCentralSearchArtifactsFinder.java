@@ -36,7 +36,7 @@ class MavenCentralSearchArtifactsFinder implements ArtifactsFinder {
 
 	private static final int PAGE_SIZE = 20;
 
-	private static final String URI_TEMPLATE = "https://search.maven.org/solrsearch/select?q=g:{group}+AND+v:{version}+AND+p:jar&rows={pageSize}&start={start}";
+	private static final String URI_TEMPLATE = "https://search.maven.org/solrsearch/select?q=g:{group}+AND+v:{version}&rows={pageSize}&start={start}";
 
 	private final RestOperations rest;
 
@@ -52,11 +52,11 @@ class MavenCentralSearchArtifactsFinder implements ArtifactsFinder {
 		do {
 			String result = this.rest.getForObject(URI_TEMPLATE, String.class, group, version, PAGE_SIZE, start);
 			DocumentContext json = JsonPath.parse(result);
-			artifacts.addAll(json.read("$.response.docs.[*].a"));
+			artifacts.addAll(json.read("$.response.docs.[?('.jar' in @.ec)].a"));
 			total = json.read("$.response.numFound");
 			start += PAGE_SIZE;
 		}
-		while (artifacts.size() < total);
+		while (start < total);
 		return new TreeSet<String>(artifacts);
 	}
 

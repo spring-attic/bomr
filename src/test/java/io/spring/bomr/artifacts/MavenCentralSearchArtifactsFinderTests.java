@@ -52,9 +52,9 @@ public class MavenCentralSearchArtifactsFinderTests {
 	}
 
 	private void configureExpectations(File root) {
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 7; i++) {
 			this.server.expect(requestTo(
-					"https://search.maven.org/solrsearch/select?q=g:org.infinispan+AND+v:9.4.15.Final+AND+p:jar&rows=20&start="
+					"https://search.maven.org/solrsearch/select?q=g:org.infinispan+AND+v:9.4.15.Final&rows=20&start="
 							+ (i * 20)))
 					.andExpect(method(HttpMethod.GET))
 					.andRespond(withSuccess(

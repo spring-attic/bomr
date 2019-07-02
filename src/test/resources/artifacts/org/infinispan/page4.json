@@ -2,120 +2,166 @@
     "response": {
         "docs": [
             {
-                "a": "elasticsearch-indexmanager-it",
+                "a": "infinispan-feature-pack-commons",
                 "ec": [
-                    "-test-sources.jar",
                     "-tests.jar",
-                    ".jar",
+                    ".zip",
                     ".pom"
                 ],
                 "g": "org.infinispan",
-                "id": "org.infinispan:elasticsearch-indexmanager-it:9.4.15.Final",
-                "p": "jar",
-                "tags": [
-                    "tests",
-                    "integration",
-                    "indexes",
-                    "storing",
-                    "elasticsearch"
-                ],
-                "timestamp": 1560796235000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-as-lucene-integration",
-                "ec": [
-                    "-test-sources.jar",
-                    ".jar",
-                    "-tests.jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-as-lucene-integration:9.4.15.Final",
-                "p": "jar",
-                "tags": [
-                    "tests",
-                    "integration",
-                    "directory",
-                    "lucene",
-                    "wildfly"
-                ],
-                "timestamp": 1560796233000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-remote-query-server",
-                "ec": [
-                    "-sources.jar",
-                    "-test-sources.jar",
-                    "-tests.jar",
-                    ".jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-remote-query-server:9.4.15.Final",
-                "p": "bundle",
+                "id": "org.infinispan:infinispan-feature-pack-commons:9.4.15.Final",
+                "p": "pom",
                 "tags": [
                     "module",
                     "infinispan",
-                    "query",
-                    "server",
-                    "remote"
+                    "common",
+                    "parent"
                 ],
-                "timestamp": 1560796224000,
+                "timestamp": 1560795934000,
                 "v": "9.4.15.Final"
             },
             {
-                "a": "infinispan-cachestore-remote",
+                "a": "infinispan-protocol-parser-generator-maven-plugin",
+                "ec": [
+                    "-sources.jar",
+                    "-tests.jar",
+                    ".jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-protocol-parser-generator-maven-plugin:9.4.15.Final",
+                "p": "maven-plugin",
+                "tags": [
+                    "bytetomessagedecoder",
+                    "generates",
+                    "netty",
+                    "codec",
+                    "based",
+                    "handler",
+                    "grammar"
+                ],
+                "timestamp": 1560795922000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-defaults-maven-plugin",
+                "ec": [
+                    "-sources.jar",
+                    "-tests.jar",
+                    ".jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-defaults-maven-plugin:9.4.15.Final",
+                "p": "maven-plugin",
+                "tags": [
+                    "module",
+                    "infinispan",
+                    "common",
+                    "parent"
+                ],
+                "timestamp": 1560795916000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-client-hotrod",
                 "ec": [
                     "-sources.jar",
                     "-test-sources.jar",
-                    "-tests.jar",
                     ".jar",
+                    "-tests.jar",
                     ".pom",
                     "-features.xml"
                 ],
                 "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-cachestore-remote:9.4.15.Final",
+                "id": "org.infinispan:infinispan-client-hotrod:9.4.15.Final",
                 "p": "bundle",
                 "tags": [
-                    "protocol",
-                    "infinispan",
-                    "cachestore",
-                    "remote",
-                    "based"
-                ],
-                "timestamp": 1560796214000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-cli-client",
-                "ec": [
-                    "-sources.jar",
-                    "-test-sources.jar",
-                    ".jar",
-                    "-tests.jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-cli-client:9.4.15.Final",
-                "p": "bundle",
-                "tags": [
-                    "module",
                     "client",
                     "infinispan"
                 ],
-                "timestamp": 1560796208000,
+                "timestamp": 1560795914000,
                 "v": "9.4.15.Final"
             },
             {
-                "a": "infinispan-server-parent",
+                "a": "infinispan-spring5-parent",
                 "ec": [
                     "-tests.jar",
                     ".pom"
                 ],
                 "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-server-parent:9.4.15.Final",
+                "id": "org.infinispan:infinispan-spring5-parent:9.4.15.Final",
+                "p": "pom",
+                "tags": [
+                    "distributed",
+                    "used",
+                    "same",
+                    "springframework",
+                    "namespace",
+                    "accesses",
+                    "over",
+                    "primary",
+                    "features",
+                    "facilitating",
+                    "factorybeans",
+                    "central",
+                    "support",
+                    "defined",
+                    "offers",
+                    "definitions",
+                    "project",
+                    "powered",
+                    "infinispan",
+                    "abstraction",
+                    "backed",
+                    "components",
+                    "outside",
+                    "creation",
+                    "remotecachemanager",
+                    "cachemanager",
+                    "remotely",
+                    "from",
+                    "running",
+                    "spring",
+                    "embeddedcachemanager",
+                    "network",
+                    "shortcut",
+                    "allowing",
+                    "integration",
+                    "performance",
+                    "above",
+                    "various",
+                    "colocated",
+                    "jndi",
+                    "retrieved",
+                    "caching",
+                    "classes",
+                    "application",
+                    "cache",
+                    "needs",
+                    "your",
+                    "provides",
+                    "addition",
+                    "access",
+                    "cachecontainer",
+                    "reference",
+                    "implementation",
+                    "context",
+                    "core",
+                    "within",
+                    "high"
+                ],
+                "timestamp": 1560795905000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-hibernate-parent",
+                "ec": [
+                    "-tests.jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-hibernate-parent:9.4.15.Final",
                 "p": "pom",
                 "tags": [
                     "module",
@@ -123,231 +169,52 @@
                     "common",
                     "parent"
                 ],
-                "timestamp": 1560796203000,
+                "timestamp": 1560795899000,
                 "v": "9.4.15.Final"
             },
             {
-                "a": "infinispan-jcache-parent",
-                "ec": [
-                    "-tests.jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-jcache-parent:9.4.15.Final",
-                "p": "pom",
-                "tags": [
-                    "module",
-                    "infinispan",
-                    "common",
-                    "parent"
-                ],
-                "timestamp": 1560796198000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-persistence-soft-index",
+                "a": "infinispan-osgi",
                 "ec": [
                     "-sources.jar",
-                    "-test-sources.jar",
-                    "-tests.jar",
                     ".jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-persistence-soft-index:9.4.15.Final",
-                "p": "bundle",
-                "tags": [
-                    "index",
-                    "module",
-                    "infinispan",
-                    "cachestore",
-                    "soft"
-                ],
-                "timestamp": 1560796194000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-hibernate-cache-v53",
-                "ec": [
-                    "-sources.jar",
-                    "-test-sources.jar",
                     "-tests.jar",
-                    ".jar",
                     ".pom",
                     "-features.xml"
                 ],
                 "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-hibernate-cache-v53:9.4.15.Final",
+                "id": "org.infinispan:infinispan-osgi:9.4.15.Final",
                 "p": "bundle",
-                "tags": [
-                    "hibernate",
-                    "module",
-                    "cache",
-                    "infinispan"
-                ],
-                "timestamp": 1560796191000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-spring-boot2-it",
-                "ec": [
-                    "-test-sources.jar",
-                    "-tests.jar",
-                    ".jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-spring-boot2-it:9.4.15.Final",
-                "p": "jar",
-                "tags": [
-                    "boot",
-                    "tests",
-                    "infinispan",
-                    "integration",
-                    "spring"
-                ],
-                "timestamp": 1560796189000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-gui-demo",
-                "ec": [
-                    "-sources.jar",
-                    "-test-sources.jar",
-                    ".jar",
-                    "-tests.jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-gui-demo:9.4.15.Final",
-                "p": "jar",
-                "tags": [
-                    "demo",
-                    "infinispan"
-                ],
-                "timestamp": 1560796184000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-spring4-remote",
-                "ec": [
-                    "-sources.jar",
-                    "-test-sources.jar",
-                    "-tests.jar",
-                    ".jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-spring4-remote:9.4.15.Final",
-                "p": "bundle",
-                "tags": [
-                    "distributed",
-                    "used",
-                    "same",
-                    "springframework",
-                    "namespace",
-                    "accesses",
-                    "over",
-                    "primary",
-                    "features",
-                    "facilitating",
-                    "factorybeans",
-                    "central",
-                    "support",
-                    "defined",
-                    "offers",
-                    "definitions",
-                    "project",
-                    "powered",
-                    "infinispan",
-                    "abstraction",
-                    "backed",
-                    "components",
-                    "outside",
-                    "creation",
-                    "remotecachemanager",
-                    "cachemanager",
-                    "remotely",
-                    "from",
-                    "running",
-                    "spring",
-                    "embeddedcachemanager",
-                    "network",
-                    "shortcut",
-                    "allowing",
-                    "integration",
-                    "performance",
-                    "above",
-                    "various",
-                    "colocated",
-                    "jndi",
-                    "retrieved",
-                    "caching",
-                    "classes",
-                    "application",
-                    "cache",
-                    "needs",
-                    "your",
-                    "provides",
-                    "addition",
-                    "access",
-                    "cachecontainer",
-                    "reference",
-                    "implementation",
-                    "context",
-                    "core",
-                    "within",
-                    "high"
-                ],
-                "timestamp": 1560796178000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-atomic-factory",
-                "ec": [
-                    "-sources.jar",
-                    "-test-sources.jar",
-                    ".jar",
-                    "-tests.jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-atomic-factory:9.4.15.Final",
-                "p": "jar",
                 "tags": [
                     "module",
                     "infinispan",
-                    "factory",
-                    "object",
-                    "atomic"
+                    "service",
+                    "osgi"
                 ],
-                "timestamp": 1560796175000,
+                "timestamp": 1560795896000,
                 "v": "9.4.15.Final"
             },
             {
-                "a": "infinispan-hibernate-cache-commons",
+                "a": "infinispan-commons-test",
                 "ec": [
                     "-sources.jar",
-                    "-test-sources.jar",
-                    "-tests.jar",
                     ".jar",
+                    "-tests.jar",
                     ".pom"
                 ],
                 "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-hibernate-cache-commons:9.4.15.Final",
-                "p": "bundle",
+                "id": "org.infinispan:infinispan-commons-test:9.4.15.Final",
+                "p": "jar",
                 "tags": [
-                    "hibernate",
-                    "module",
-                    "cache",
                     "infinispan",
+                    "test",
+                    "dependencies",
                     "commons"
                 ],
-                "timestamp": 1560796173000,
+                "timestamp": 1560795894000,
                 "v": "9.4.15.Final"
             },
             {
-                "a": "infinispan-spring4-common",
+                "a": "infinispan-server-hotrod",
                 "ec": [
                     "-sources.jar",
                     "-test-sources.jar",
@@ -356,8 +223,125 @@
                     ".pom"
                 ],
                 "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-spring4-common:9.4.15.Final",
+                "id": "org.infinispan:infinispan-server-hotrod:9.4.15.Final",
+                "p": "bundle",
+                "tags": [
+                    "infinispan",
+                    "server"
+                ],
+                "timestamp": 1560795887000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-cdi-jcache-it",
+                "ec": [
+                    "-test-sources.jar",
+                    ".jar",
+                    "-tests.jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-cdi-jcache-it:9.4.15.Final",
                 "p": "jar",
+                "tags": [
+                    "tests",
+                    "infinispan",
+                    "integration",
+                    "modules",
+                    "jcache"
+                ],
+                "timestamp": 1560795884000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-feature-pack-server",
+                "ec": [
+                    "-tests.jar",
+                    ".zip",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-feature-pack-server:9.4.15.Final",
+                "p": "pom",
+                "tags": [
+                    "module",
+                    "infinispan",
+                    "common",
+                    "parent"
+                ],
+                "timestamp": 1560795848000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-endpoint-interop-it",
+                "ec": [
+                    "-test-sources.jar",
+                    ".jar",
+                    "-tests.jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-endpoint-interop-it:9.4.15.Final",
+                "p": "jar",
+                "tags": [
+                    "tests",
+                    "integration",
+                    "endpoints",
+                    "interoperability"
+                ],
+                "timestamp": 1560795845000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-lucene-parent",
+                "ec": [
+                    "-tests.jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-lucene-parent:9.4.15.Final",
+                "p": "pom",
+                "tags": [
+                    "module",
+                    "infinispan",
+                    "common",
+                    "parent"
+                ],
+                "timestamp": 1560795839000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-tools",
+                "ec": [
+                    "-sources.jar",
+                    "-test-sources.jar",
+                    "-tests.jar",
+                    ".jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-tools:9.4.15.Final",
+                "p": "bundle",
+                "tags": [
+                    "project",
+                    "tools",
+                    "infinispan"
+                ],
+                "timestamp": 1560795828000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-spring4-embedded",
+                "ec": [
+                    "-sources.jar",
+                    "-test-sources.jar",
+                    ".jar",
+                    "-tests.jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-spring4-embedded:9.4.15.Final",
+                "p": "bundle",
                 "tags": [
                     "distributed",
                     "used",
@@ -417,88 +401,143 @@
                     "within",
                     "high"
                 ],
-                "timestamp": 1560796156000,
+                "timestamp": 1560795826000,
                 "v": "9.4.15.Final"
             },
             {
-                "a": "infinispan-integrationtests-parent",
-                "ec": [
-                    "-tests.jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-integrationtests-parent:9.4.15.Final",
-                "p": "pom",
-                "tags": [
-                    "tests",
-                    "infinispan",
-                    "integration",
-                    "parent"
-                ],
-                "timestamp": 1560796151000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-distribution",
-                "ec": [
-                    "-tests.jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-distribution:9.4.15.Final",
-                "p": "pom",
-                "tags": [
-                    "module",
-                    "infinispan",
-                    "common",
-                    "parent"
-                ],
-                "timestamp": 1560796146000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-javadoc-embedded",
-                "ec": [
-                    "-javadoc.jar",
-                    ".jar",
-                    "-tests.jar",
-                    ".pom"
-                ],
-                "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-javadoc-embedded:9.4.15.Final",
-                "p": "jar",
-                "tags": [
-                    "module",
-                    "infinispan",
-                    "common",
-                    "parent"
-                ],
-                "timestamp": 1560796144000,
-                "v": "9.4.15.Final"
-            },
-            {
-                "a": "infinispan-spring-boot-it",
+                "a": "infinispan-embedded-it",
                 "ec": [
                     "-test-sources.jar",
-                    "-tests.jar",
                     ".jar",
+                    "-tests.jar",
                     ".pom"
                 ],
                 "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-spring-boot-it:9.4.15.Final",
+                "id": "org.infinispan:infinispan-embedded-it:9.4.15.Final",
                 "p": "jar",
                 "tags": [
-                    "boot",
+                    "module",
                     "tests",
                     "infinispan",
                     "integration",
-                    "spring"
+                    "embedded"
                 ],
-                "timestamp": 1560796142000,
+                "timestamp": 1560795821000,
                 "v": "9.4.15.Final"
             },
             {
-                "a": "infinispan-cdi-embedded",
+                "a": "infinispan-persistence-parent",
+                "ec": [
+                    "-tests.jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-persistence-parent:9.4.15.Final",
+                "p": "pom",
+                "tags": [
+                    "module",
+                    "infinispan",
+                    "common",
+                    "parent"
+                ],
+                "timestamp": 1560795818000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-feature-pack-wf-modules",
+                "ec": [
+                    "-tests.jar",
+                    ".zip",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-feature-pack-wf-modules:9.4.15.Final",
+                "p": "pom",
+                "tags": [
+                    "module",
+                    "infinispan",
+                    "common",
+                    "parent"
+                ],
+                "timestamp": 1560795811000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-spring5-embedded",
+                "ec": [
+                    "-sources.jar",
+                    "-test-sources.jar",
+                    ".jar",
+                    "-tests.jar",
+                    ".pom"
+                ],
+                "g": "org.infinispan",
+                "id": "org.infinispan:infinispan-spring5-embedded:9.4.15.Final",
+                "p": "bundle",
+                "tags": [
+                    "distributed",
+                    "used",
+                    "same",
+                    "springframework",
+                    "namespace",
+                    "accesses",
+                    "over",
+                    "primary",
+                    "features",
+                    "facilitating",
+                    "factorybeans",
+                    "central",
+                    "support",
+                    "defined",
+                    "offers",
+                    "definitions",
+                    "project",
+                    "powered",
+                    "infinispan",
+                    "abstraction",
+                    "backed",
+                    "components",
+                    "outside",
+                    "creation",
+                    "remotecachemanager",
+                    "cachemanager",
+                    "remotely",
+                    "from",
+                    "running",
+                    "spring",
+                    "embeddedcachemanager",
+                    "network",
+                    "shortcut",
+                    "allowing",
+                    "integration",
+                    "performance",
+                    "above",
+                    "various",
+                    "colocated",
+                    "jndi",
+                    "retrieved",
+                    "caching",
+                    "classes",
+                    "application",
+                    "cache",
+                    "needs",
+                    "your",
+                    "provides",
+                    "addition",
+                    "access",
+                    "cachecontainer",
+                    "reference",
+                    "implementation",
+                    "context",
+                    "core",
+                    "within",
+                    "high"
+                ],
+                "timestamp": 1560795810000,
+                "v": "9.4.15.Final"
+            },
+            {
+                "a": "infinispan-server-router",
                 "ec": [
                     "-sources.jar",
                     "-test-sources.jar",
@@ -507,23 +546,23 @@
                     ".pom"
                 ],
                 "g": "org.infinispan",
-                "id": "org.infinispan:infinispan-cdi-embedded:9.4.15.Final",
+                "id": "org.infinispan:infinispan-server-router:9.4.15.Final",
                 "p": "bundle",
                 "tags": [
-                    "module",
+                    "tenant",
                     "infinispan",
-                    "common",
-                    "parent"
+                    "router",
+                    "multi"
                 ],
-                "timestamp": 1560796124000,
+                "timestamp": 1560795794000,
                 "v": "9.4.15.Final"
             }
         ],
         "numFound": 103,
-        "start": 20
+        "start": 60
     },
     "responseHeader": {
-        "QTime": 4,
+        "QTime": 1,
         "params": {
             "core": "",
             "fl": "id,g,a,v,p,ec,timestamp,tags",
@@ -531,7 +570,7 @@
             "q": "g:org.infinispan AND v:9.4.15.Final",
             "rows": "20",
             "sort": "score desc,timestamp desc,g asc,a asc,v desc",
-            "start": "20",
+            "start": "60",
             "version": "2.2",
             "wt": "json"
         },
