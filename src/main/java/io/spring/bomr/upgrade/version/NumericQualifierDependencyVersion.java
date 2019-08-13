@@ -17,6 +17,7 @@
 package io.spring.bomr.upgrade.version;
 
 import org.apache.maven.artifact.versioning.ArtifactVersion;
+import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 
 /**
@@ -30,7 +31,7 @@ final class NumericQualifierDependencyVersion extends ArtifactVersionDependencyV
 	private final String original;
 
 	private NumericQualifierDependencyVersion(ArtifactVersion artifactVersion, String original) {
-		super(artifactVersion);
+		super(artifactVersion, new ComparableVersion(original));
 		this.original = original;
 	}
 

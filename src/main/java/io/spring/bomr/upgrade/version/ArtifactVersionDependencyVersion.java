@@ -36,6 +36,11 @@ class ArtifactVersionDependencyVersion extends AbstractDependencyVersion {
 		this.artifactVersion = artifactVersion;
 	}
 
+	protected ArtifactVersionDependencyVersion(ArtifactVersion artifactVersion, ComparableVersion comparableVersion) {
+		super(comparableVersion);
+		this.artifactVersion = artifactVersion;
+	}
+
 	@Override
 	public boolean isNewerThan(DependencyVersion other) {
 		if (other instanceof ReleaseTrainDependencyVersion) {
