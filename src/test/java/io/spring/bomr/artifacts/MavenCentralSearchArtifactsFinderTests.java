@@ -48,7 +48,7 @@ public class MavenCentralSearchArtifactsFinderTests {
 	public void findReturnsNamesOfArtifactsWithMatchingVersionAndJarArtifact() {
 		configureExpectations(new File("src/test/resources/artifacts/org/quartz-scheduler/"));
 		Set<String> artifacts = new MavenCentralSearchArtifactsFinder(this.rest).find("org.infinispan", "9.4.15.Final");
-		assertThat(artifacts).hasSize(43);
+		assertThat(artifacts).hasSize(82);
 	}
 
 	private void configureExpectations(File root) {
