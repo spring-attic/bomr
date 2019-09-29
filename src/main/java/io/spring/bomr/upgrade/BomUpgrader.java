@@ -48,7 +48,8 @@ final class BomUpgrader {
 		this.prohibitedVersions = prohibitedVersions;
 	}
 
-	void upgrade(File bomFile, String organization, String repositoryName, List<String> labels, String milestoneName) {
+	void upgrade(File bomFile, String organization, String repositoryName, List<String> labels, String milestoneName,
+			boolean dryRun) {
 		GitHubRepository repository = this.gitHub.getRepository(organization, repositoryName);
 		List<String> availableLabels = repository.getLabels();
 		if (!availableLabels.containsAll(labels)) {
@@ -61,7 +62,7 @@ final class BomUpgrader {
 		Bom bom = new Bom(bomFile);
 		List<Upgrade> upgrades = new InteractiveUpgradeResolver(this.versionResolver, this.upgradePolicy,
 				this.prohibitedVersions).resolveUpgrades(bom.getManagedProjects().values());
-		upgrades.forEach((upgrade) -> applyUpgrade(upgrade, bom, repository, labels, milestone));
+		upgrades.forEach((upgrade) -> applyUpgrade(upgrade, bom, repository, labels, milestone, dryRun));
 	}
 
 	private Milestone determineMilestone(GitHubRepository repository, String milestoneName) {
@@ -79,10 +80,13 @@ final class BomUpgrader {
 	}
 
 	private void applyUpgrade(Upgrade upgrade, Bom bom, GitHubRepository repository, List<String> labels,
-			Milestone milestone) {
+			Milestone milestone, boolean dryRun) {
+		bom.applyUpgrade(upgrade);
+		if (dryRun) {
+			return;
+		}
 		String description = "Upgrade to " + upgrade.getProject().getName() + " " + upgrade.getVersion();
 		int issueNumber = repository.openIssue(description, labels, milestone);
-		bom.applyUpgrade(upgrade);
 		bom.commit(description + "\n\nCloses gh-" + issueNumber);
 	}
 

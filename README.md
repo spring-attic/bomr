@@ -147,7 +147,7 @@ you wish to upgrade. `upgrade` uses the following configuration properties:
 | `bomr.upgrade.prohibited.[].project`  | Project identifier, based on its version property in the bom |
 | `bomr.upgrade.prohibited.[].versions` | List of prohibited versions                    |
 
-The command takes a single option:
+The command takes two options:
 
 ```
 Usage: bomr upgrade [<options>]
@@ -155,9 +155,10 @@ Usage: bomr upgrade [<options>]
 Option                Description
 ------                -----------
 --milestone <String>  Milestone to which upgrade issues are assigned
+--dry                 Run upgrade logic without creating issues or doing commits
 ```
 
-For example, to upgrade a bom and assign isses to the `2.0.5` milestone:
+For example, to upgrade a bom and assign issues to the `2.0.5` milestone:
 
 ```
 $ bomr.jar upgrade --milestone=2.0.5

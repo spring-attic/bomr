@@ -22,6 +22,7 @@ import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.BuiltinHelpFormatter;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import joptsimple.OptionSpec;
 
 /**
  * Command line arguments for the {@link UpgradeCommand}.
@@ -32,8 +33,11 @@ final class UpgradeCommandArguments {
 
 	private final String milestone;
 
-	private UpgradeCommandArguments(String milestone) {
+	private final boolean dryRun;
+
+	private UpgradeCommandArguments(String milestone, boolean dryRun) {
 		this.milestone = milestone;
+		this.dryRun = dryRun;
 	}
 
 	static UpgradeCommandArguments parse(String[] args) {
@@ -42,12 +46,14 @@ final class UpgradeCommandArguments {
 		ArgumentAcceptingOptionSpec<String> milestoneSpec = optionParser
 				.accepts("milestone", "Milestone to which upgrade issues are assigned").withRequiredArg()
 				.ofType(String.class);
+		OptionSpec<Void> drySpec = optionParser.accepts("dry",
+				"Run upgrade logic without creating issues or doing commits");
 		try {
 			OptionSet parsed = optionParser.parse(args);
 			if (parsed.nonOptionArguments().size() != 0) {
 				showUsageAndExit(optionParser);
 			}
-			return new UpgradeCommandArguments(parsed.valueOf(milestoneSpec));
+			return new UpgradeCommandArguments(parsed.valueOf(milestoneSpec), parsed.has(drySpec));
 		}
 		catch (Exception ex) {
 			showUsageAndExit(optionParser);
@@ -70,6 +76,10 @@ final class UpgradeCommandArguments {
 
 	String getMilestone() {
 		return this.milestone;
+	}
+
+	boolean isDryRun() {
+		return this.dryRun;
 	}
 
 }

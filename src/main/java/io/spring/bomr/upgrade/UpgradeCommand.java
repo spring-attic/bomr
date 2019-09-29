@@ -59,7 +59,7 @@ final class UpgradeCommand implements Command {
 			System.err.println();
 			System.err.println("Fatal: bomr.bom has not been configured");
 			System.err.println();
-			System.err.println("Check your onfiguration in .bomr/bomr.(properties|yaml)");
+			System.err.println("Check your configuration in .bomr/bomr.(properties|yaml)");
 			System.err.println();
 			System.exit(-1);
 		}
@@ -69,14 +69,14 @@ final class UpgradeCommand implements Command {
 			System.err.println();
 			System.err.println("  " + this.bom.getAbsolutePath());
 			System.err.println();
-			System.err.println("Check your onfiguration in .bomr/bomr.(properties|yaml)");
+			System.err.println("Check your configuration in .bomr/bomr.(properties|yaml)");
 			System.err.println();
 			System.exit(-1);
 		}
 		new BomUpgrader(this.gitHub, new MavenMetadataVersionResolver(Arrays.asList("https://repo1.maven.org/maven2/")),
 				this.properties.getPolicy(), this.properties.getProhibited()).upgrade(this.bom,
 						this.properties.getGithub().getOrganization(), this.properties.getGithub().getRepository(),
-						this.properties.getGithub().getIssueLabels(), arguments.getMilestone());
+						this.properties.getGithub().getIssueLabels(), arguments.getMilestone(), arguments.isDryRun());
 	}
 
 }
