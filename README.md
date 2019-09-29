@@ -155,7 +155,7 @@ Usage: bomr upgrade [<options>]
 Option                Description
 ------                -----------
 --milestone <String>  Milestone to which upgrade issues are assigned
---dry                 Run upgrade logic without creating issues or doing commits
+--dry-run             Run upgrade logic without creating issues or doing commits
 ```
 
 For example, to upgrade a bom and assign issues to the `2.0.5` milestone:

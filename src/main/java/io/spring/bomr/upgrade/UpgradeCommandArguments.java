@@ -46,14 +46,14 @@ final class UpgradeCommandArguments {
 		ArgumentAcceptingOptionSpec<String> milestoneSpec = optionParser
 				.accepts("milestone", "Milestone to which upgrade issues are assigned").withRequiredArg()
 				.ofType(String.class);
-		OptionSpec<Void> drySpec = optionParser.accepts("dry",
+		OptionSpec<Void> dryRunSpec = optionParser.accepts("dry-run",
 				"Run upgrade logic without creating issues or doing commits");
 		try {
 			OptionSet parsed = optionParser.parse(args);
 			if (parsed.nonOptionArguments().size() != 0) {
 				showUsageAndExit(optionParser);
 			}
-			return new UpgradeCommandArguments(parsed.valueOf(milestoneSpec), parsed.has(drySpec));
+			return new UpgradeCommandArguments(parsed.valueOf(milestoneSpec), parsed.has(dryRunSpec));
 		}
 		catch (Exception ex) {
 			showUsageAndExit(optionParser);
