@@ -4,10 +4,10 @@ CLI tool for maintaining a Maven bom.
 
 ## Building
 
-Bomr requires Java 8 and is built with Maven:
+Bomr requires Java 8 and is built with Gradle:
 
 ```
-./mvnw clean package
+./gradlew clean build
 ```
 
 ## Running
