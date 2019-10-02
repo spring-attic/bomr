@@ -59,7 +59,7 @@ final class UpgradeCommand implements Command {
 			System.err.println();
 			System.err.println("Fatal: bomr.bom has not been configured");
 			System.err.println();
-			System.err.println("Check your onfiguration in .bomr/bomr.(properties|yaml)");
+			System.err.println("Check your configuration in .bomr/bomr.(properties|yaml)");
 			System.err.println();
 			System.exit(-1);
 		}
@@ -69,7 +69,7 @@ final class UpgradeCommand implements Command {
 			System.err.println();
 			System.err.println("  " + this.bom.getAbsolutePath());
 			System.err.println();
-			System.err.println("Check your onfiguration in .bomr/bomr.(properties|yaml)");
+			System.err.println("Check your configuration in .bomr/bomr.(properties|yaml)");
 			System.err.println();
 			System.exit(-1);
 		}

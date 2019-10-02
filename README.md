@@ -157,7 +157,7 @@ Option                Description
 --milestone <String>  Milestone to which upgrade issues are assigned
 ```
 
-For example, to upgrade a bom and assign isses to the `2.0.5` milestone:
+For example, to upgrade a bom and assign issues to the `2.0.5` milestone:
 
 ```
 $ bomr.jar upgrade --milestone=2.0.5
