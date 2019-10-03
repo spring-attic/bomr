@@ -33,11 +33,14 @@ final class UpgradeCommandArguments {
 
 	private final String milestone;
 
-	private final boolean dryRun;
+	private final boolean commitsEnabled;
 
-	private UpgradeCommandArguments(String milestone, boolean dryRun) {
+	private final boolean issuesEnabled;
+
+	private UpgradeCommandArguments(String milestone, boolean commitsEnabled, boolean issuesEnabled) {
 		this.milestone = milestone;
-		this.dryRun = dryRun;
+		this.commitsEnabled = commitsEnabled;
+		this.issuesEnabled = issuesEnabled;
 	}
 
 	static UpgradeCommandArguments parse(String[] args) {
@@ -46,14 +49,17 @@ final class UpgradeCommandArguments {
 		ArgumentAcceptingOptionSpec<String> milestoneSpec = optionParser
 				.accepts("milestone", "Milestone to which upgrade issues are assigned").withRequiredArg()
 				.ofType(String.class);
-		OptionSpec<Void> dryRunSpec = optionParser.accepts("dry-run",
-				"Run upgrade logic without creating issues or doing commits");
+		OptionSpec<Void> noCommitsSpec = optionParser.accepts("no-commits",
+				"Suppress the creation of commits during the upgrade");
+		OptionSpec<Void> noIssuesSpec = optionParser.accepts("no-issues",
+				"Suppress the creation of issues during the upgrade");
 		try {
 			OptionSet parsed = optionParser.parse(args);
 			if (parsed.nonOptionArguments().size() != 0) {
 				showUsageAndExit(optionParser);
 			}
-			return new UpgradeCommandArguments(parsed.valueOf(milestoneSpec), parsed.has(dryRunSpec));
+			return new UpgradeCommandArguments(parsed.valueOf(milestoneSpec), !parsed.has(noCommitsSpec),
+					!parsed.has(noIssuesSpec));
 		}
 		catch (Exception ex) {
 			showUsageAndExit(optionParser);
@@ -78,8 +84,12 @@ final class UpgradeCommandArguments {
 		return this.milestone;
 	}
 
-	boolean isDryRun() {
-		return this.dryRun;
+	boolean commitsEnabled() {
+		return this.commitsEnabled;
+	}
+
+	boolean issuesEnabled() {
+		return this.issuesEnabled;
 	}
 
 }
