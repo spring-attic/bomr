@@ -22,6 +22,7 @@ import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.BuiltinHelpFormatter;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import joptsimple.OptionSpec;
 
 /**
  * Command line arguments for the {@link UpgradeCommand}.
@@ -32,8 +33,14 @@ final class UpgradeCommandArguments {
 
 	private final String milestone;
 
-	private UpgradeCommandArguments(String milestone) {
+	private final boolean commitsEnabled;
+
+	private final boolean issuesEnabled;
+
+	private UpgradeCommandArguments(String milestone, boolean commitsEnabled, boolean issuesEnabled) {
 		this.milestone = milestone;
+		this.commitsEnabled = commitsEnabled;
+		this.issuesEnabled = issuesEnabled;
 	}
 
 	static UpgradeCommandArguments parse(String[] args) {
@@ -42,12 +49,17 @@ final class UpgradeCommandArguments {
 		ArgumentAcceptingOptionSpec<String> milestoneSpec = optionParser
 				.accepts("milestone", "Milestone to which upgrade issues are assigned").withRequiredArg()
 				.ofType(String.class);
+		OptionSpec<Void> noCommitsSpec = optionParser.accepts("no-commits",
+				"Suppress the creation of commits during the upgrade");
+		OptionSpec<Void> noIssuesSpec = optionParser.accepts("no-issues",
+				"Suppress the creation of issues during the upgrade");
 		try {
 			OptionSet parsed = optionParser.parse(args);
 			if (parsed.nonOptionArguments().size() != 0) {
 				showUsageAndExit(optionParser);
 			}
-			return new UpgradeCommandArguments(parsed.valueOf(milestoneSpec));
+			return new UpgradeCommandArguments(parsed.valueOf(milestoneSpec), !parsed.has(noCommitsSpec),
+					!parsed.has(noIssuesSpec));
 		}
 		catch (Exception ex) {
 			showUsageAndExit(optionParser);
@@ -70,6 +82,14 @@ final class UpgradeCommandArguments {
 
 	String getMilestone() {
 		return this.milestone;
+	}
+
+	boolean commitsEnabled() {
+		return this.commitsEnabled;
+	}
+
+	boolean issuesEnabled() {
+		return this.issuesEnabled;
 	}
 
 }
